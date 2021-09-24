@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -125,10 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'staticfiles')
-)
+import sys
+if sys.argv[1] != 'runserver':
+    STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
+STATICFILES_DIRS = [(BASE_DIR / 'staticfiles')]
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -161,3 +163,8 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
+# User
+
+AUTH_USER_MODEL = 'users.User'

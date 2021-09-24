@@ -26,15 +26,15 @@
                 <h2 class="sign__title">
                     Войти
                 </h2>
-                <form action="">
+                <form action="." method="POST">
+                    {% csrf_token %}
                     <div class="fields">
 {#                        Если E-mail неправильный, добавить класс "error" на fields#}
 {#                        и раскомментировать email__error#}
-                        <label for="sign-email" class="sign__label">
+                        <label for="id_email" class="sign__label">
                             Ваш электронный адрес
                         </label>
-                        <input required type="text" id="sign-email" class="sign__input"
-                               placeholder="Email или ваша почта">
+                        {{ form.email }}
 {#                        <p class="email__error">#}
 {#                            Email не найден попробуйте снова#}
 {#                        </p>#}
@@ -42,12 +42,11 @@
                     <div class="fields">
 {#                        Если пароль неправильный, добавить класс "error" на fields#}
 {#                        и раскомментировать forget__password #}
-                        <label for="sign-password" class="sign__label">
+                        <label for="id_password" class="sign__label">
                             Ваш пароль
                         </label>
                         <div class="sign__input-wrap">
-                            <input required type="password" id="sign-password" class="sign__input"
-                                   placeholder="Пароль">
+                            {{ form.password }}
                             <div class="sign__eye"></div>
                         </div>
 {#                        <div class="forget__password" data-micromodal-trigger="forget-password">#}
@@ -59,7 +58,7 @@
                     </button>
                 </form>
                 <p class="sign__link">
-                    Нет аккаунта? <a href="{% url 'registration' %}">Зарегистрироваться</a>
+                    Нет аккаунта? <a href="#">Зарегистрироваться</a>
                 </p>
             </div>
         </div>
@@ -106,7 +105,4 @@
 {% endblock %}
 
 {% block scripts %}
-
-
-
 {% endblock %}

@@ -3,13 +3,13 @@
 <div class="faq__sidebar-wrap">
     <div class="faq__sidebar">
         <div class="faq__links">
-            <a href="{% url 'aboutus' %]" class="faq__link about-us">
+            <a href="#" class="faq__link about-us">
                 О нас
             </a>
             <a href="#" class="faq__link contacts">
                 Контакты
             </a>
-            <a href="{% url 'faq' %}" class="faq__link faq active">
+            <a href="#" class="faq__link faq active">
                 F.A.Q
             </a>
         </div>
@@ -29,31 +29,31 @@
                 <h2 class="modal__title">
                     Остались вопросы?
                 </h2>
-                <form action="" id="faq-form">
-                    <label class="sign__label" id="email-label">
+                <form action="">
+                    <label class="sign__label">
                         Email
                     </label>
                     <input required type="text" class="sign__input"
-                           placeholder="Введите email" id="email-field">
+                           placeholder="Введите email">
 
-                    <label class="sign__label" id="phone-label">
+                    <label class="sign__label">
                         Номер телефона
                     </label>
                     <input required type="text" class="sign__input"
-                           placeholder="+996 999 999 999 " id="phone">
+                           placeholder="+996 999 999 999 ">
 
                     <label class="sign__label">
                         Как вас зовут?
                     </label>
                     <input required type="text" class="sign__input"
-                           placeholder="Ваше Имя" id="name">
+                           placeholder="Ваше Имя">
 
                     <label class="sign__label">
                         Комментарии
                     </label>
                     <textarea maxlength="324"
                               class="sign__input modal__textarea"
-                              placeholder="Можете оставить комментарий" id="comment"></textarea>
+                              placeholder="Можете оставить комментарий"></textarea>
                     <div class="symbol__counter">
                             <span class="current__length">
                                 0
@@ -64,7 +64,7 @@
                             </span>
                     </div>
 
-                    <button type="submit" class="personal__btn modal__btn" id="faq-button">
+                    <button type="submit" class="personal__btn modal__btn">
                         Сохранить изменения
                     </button>
                 </form>
@@ -114,130 +114,5 @@
     })
 </script>
 <script>
-var submitted = false;
-var form = document.getElementById("faq-form");
-form.onsubmit = function(){
-   if(!submitted){
-       submitted = false;
-   }
-   return false;
-}
-function validateEmail(email)
-{
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
-}
-
-function validatePhone(phone)
-{
-    var re = /(996)\d{9}$/;
-    return re.test(phone);
-}
-
-
-    $('#faq-button').on('click', function (){
-<!--        function validateEmail(email)-->
-<!--        {-->
-<!--            var re = /\S+@\S+\.\S+/;-->
-<!--            return re.test(email);-->
-<!--        }-->
-
-<!--        function validatePhone(phone)-->
-<!--        {-->
-<!--            var re = /(996)\d{9}$/;-->
-<!--            return re.test(phone);-->
-<!--        }-->
-
-
-
-
-        let email = $('#email-field')[0].value;
-        let phone = $('#phone')[0].value;
-        let name = $('#name')[0].value;
-        let comment = $('#comment')[0].value;
-
-        console.log(email);
-
-        let data = {
-            email: email,
-            phone: phone,
-            name: name,
-            comment: comment,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        }
-
-        if(validatePhone(phone) && email!==''){
-            $('#phone-label').css('color', '');
-            $('#phone').css('border-color', '');
-            $('#phone-error').remove();
-            }
-        else if(email==''){}
-        else{
-            $('#phone-label').css('color', 'red');
-            $('#phone').css('border-color', 'red');
-            if($('#phone-error').length == 0){
-                $('#phone').after('<p class="email__error" id="phone-error">Номерен введен неправильно </p>');
-            };
-        };
-
-        if(validateEmail(email) && email!=='' ){
-            $('#email-label').css('color', '');
-            $('#email-field').css('border-color', '');
-            $('#email-error').remove();
-
-        }
-        else if(email==''){console.log('empty');}
-        else{
-            $('#email-label').css('color', 'red');
-            $('#email-field').css('border-color', 'red');
-            if($('#email-error').length == 0){
-                $('#email').after('<p class="email__error" id="email-error">Email не верен </p>');
-            };
-        };
-
-
-
-        if(validateEmail(email) && validatePhone(phone)){
-             $.ajax({
-            method:"POST",
-            dataType: "json",
-            data: data,
-            url: "{% url "faq-send" %}",
-            success: function(data){
-                let result = data['data']
-                if (result){
-
-                    $('#email-field').val('');
-                    $('#phone').val('');
-                    $('#name').val('');
-                    $('#comment').val('');
-
-                    MicroModal.close('questions');
-                    MicroModal.show('questions-success');
-                }
-                else {
-                    console.log(false);
-                    $("#field").addClass("error");
-                    if ($('#must2').length == 0){
-                    $(".must").after('<p class="email__error" id="must2">Email не совпадает </p>');
-                    };
-
-                };
-            }
-        })
-        }
-
-
-
-
-        console.log(email);
-
-        console.log('Script is available');
-
-
-    })
-
-
-
     {#MicroModal.show('questions-success');  показать модалку что отправлено#}
 </script>
