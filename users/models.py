@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import RegexValidator
 from django.db import models
@@ -54,4 +53,3 @@ class User(AbstractUser):
         return self.email
 
 
-User = get_user_model()

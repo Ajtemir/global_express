@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import sys
 import os
 from pathlib import Path
 
@@ -127,7 +128,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-import sys
 if sys.argv[1] != 'runserver':
     STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 STATICFILES_DIRS = [(BASE_DIR / 'staticfiles')]
@@ -168,3 +168,4 @@ EMAIL_USE_SSL = False
 # User
 
 AUTH_USER_MODEL = 'users.User'
+

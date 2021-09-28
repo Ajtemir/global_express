@@ -13,7 +13,7 @@
         {% include 'components/sidebar-menu/sidebar-menu.html' %}
         <div class="container">
             <div class="parcel__content personal__content">
-                <form action="">
+                <form action="" id="form">
                     <div class="personal__box">
                         <h2 class="personal__title">
                             Личный кабинет
@@ -22,7 +22,7 @@
                             <label for="email">
                                 Ваш электронный адрес
                             </label>
-                            <input type="text" id="email"
+                            <input type="text" id="email" value="{{ user.email }}"
                                    placeholder="Ваш электронный адрес" required>
                         </div>
 
@@ -30,7 +30,7 @@
                             <label for="name">
                                 Имя
                             </label>
-                            <input type="text" id="name" placeholder="Имя"
+                            <input type="text" id="name" placeholder="Имя" value="{{ user.first_name }}"
                                    required>
                         </div>
 
@@ -38,7 +38,7 @@
                             <label for="surname">
                                 Фамилия
                             </label>
-                            <input type="text" id="surname"
+                            <input type="text" id="surname" value="{{ user.last_name }}"
                                    placeholder="Фамилия" required>
                         </div>
 
@@ -46,7 +46,7 @@
                             <label for="patronymic">
                                 Отчество
                             </label>
-                            <input type="text" id="patronymic"
+                            <input type="text" id="patronymic" value="{{ user.patronymic }}"
                                    placeholder="Отчество">
                         </div>
 
@@ -54,7 +54,7 @@
                             <label for="address">
                                 Адрес проживания
                             </label>
-                            <input type="text" id="address"
+                            <input type="text" id="address" value="{{  user.address }}"
                                    placeholder="Адрес проживания" required>
                         </div>
 
@@ -63,14 +63,14 @@
                                 <label for="city">
                                     Город
                                 </label>
-                                <input type="text" id="city" placeholder="Город"
+                                <input type="text" id="city" placeholder="Город" value="{{  user.city }}"
                                        required>
                             </div>
                             <div>
                                 <label for="house">
                                     Дом
                                 </label>
-                                <input type="text" id="house" placeholder="Дом"
+                                <input type="text" id="house" placeholder="Дом" value="{{  user.apartment }}"
                                        required>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                             <label for="postcode">
                                 Почтовый индекс*
                             </label>
-                            <input type="text" id="postcode"
+                            <input type="text" id="postcode" value="{{  user.postcode }}"
                                    placeholder="Почтовый индекс*" required>
                         </div>
 
@@ -88,12 +88,12 @@
                                 Скан паспорта (Внешняя часть)
                             </label>
                             <div class="file__input-wrap">
-                                <input type="file" id="scan-out" required
-                                       accept="image/*">
+                                <input type="file" id="scan-out"
+                                       accept="image/*" >
                                 <input type="text"
                                        class="sign__input file__upload"
                                        placeholder="Перенсите файл сюда"
-                                       readonly>
+                                       readonly value="{{ request.user.scan_in }}">
                                 <button type="button" class="file__icon">
                                     <svg width="16" height="16"
                                          viewBox="0 0 16 16" fill="none"
@@ -118,12 +118,12 @@
                                 Скан паспорта (Внутреняя часть)
                             </label>
                             <div class="file__input-wrap">
-                                <input type="file" id="scan-in" required
+                                <input type="file" id="scan-in"
                                        accept="image/*">
                                 <input type="text"
                                        class="sign__input file__upload"
                                        placeholder="Перенсите файл сюда"
-                                       readonly>
+                                       readonly value="{{ request.user.scan_out }}">
                                 <button type="button" class="file__icon">
                                     <svg width="16" height="16"
                                          viewBox="0 0 16 16" fill="none"
@@ -142,7 +142,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button type="submit"
+                        <button type="submit" id="save-changes"
                                 class="personal__btn personal__save">
                             Сохранить изменения
                         </button>
@@ -188,7 +188,7 @@
                     <p class="modal__subtitle">
                         Здесь вы можете поменять пароль
                     </p>
-                    <form action="">
+                    <form action="" id="password-form">
                         <label for="sign-email" class="sign__label">
                             Старый пароль
                         </label>
@@ -204,7 +204,7 @@
                                    placeholder="Ваш новый пароль">
                             <div class="sign__eye"></div>
                         </div>
-                        <label for="sign-password" class="sign__label">
+                        <label for="sign-password-repeat" class="sign__label">
                             Повторите пароль
                         </label>
                         <div class="sign__input-wrap">
@@ -213,7 +213,7 @@
                                    placeholder="Повторите новый пароль">
                             <div class="sign__eye"></div>
                         </div>
-                        <button type="submit" class="personal__btn modal__btn">
+                        <button type="submit" class="personal__btn modal__btn" id="save-password">
                             Сохранить изменения
                         </button>
                     </form>
