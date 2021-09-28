@@ -111,8 +111,7 @@ class ChangePasswordView(View):
 class ChangeProfileView(View):
     @staticmethod
     def post(request):
-        print(type(request))
-        print(request.user)
+
         scan_in = request.FILES.get('scan-in')
         scan_out = request.FILES.get('scan-out')
         postcode = request.POST.get('postcode')
@@ -142,7 +141,6 @@ class ChangeProfileView(View):
 
         if scan_in:
             user.scan_in = scan_in
-            print(scan_in)
         if scan_out:
             user.scan_out = scan_out
 

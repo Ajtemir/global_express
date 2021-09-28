@@ -291,4 +291,136 @@
         {#  MicroModal.show('change-password-success');   показать модалку что отправлено  #}
         {#  MicroModal.show('edit-profile-success');    показать модалку что отправлено  #}
     </script>
+
+    <script>
+    {# пароль #}
+    var submitted = false;
+    var form = document.getElementById("form");
+    form.onsubmit = function(){
+    if(!submitted){
+        submitted = false;
+    }
+    return false;
+    }
+
+    {# профиль #}
+    var submitted = false;
+    var form = document.getElementById("password-form");
+    form.onsubmit = function(){
+    if(!submitted){
+        submitted = false;
+    }
+    return false;
+    }
+
+    {# ajax change-password #}
+
+        $('#save-password').on('click', function (){
+        console.log('old_password');
+
+        let old_password = $('#sign-email')[0].value;
+        let new_password = $('#sign-password')[0].value;
+        let confirm_password = $('#sign-password-repeat')[0].value;
+
+
+
+        let data = {
+            old_password: old_password,
+            new_password: new_password,
+            confirm_password: confirm_password,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+
+        $.ajax({
+            method:"POST",
+            dataType: "json",
+            data: data,
+            url: "{% url "users:change-password" %}",
+            success: function(data){
+                let result = data['data']
+
+
+
+                if (result=='Старый и новый пароль совпадает'){
+                    $("#password-error").remove();
+
+                    $("label[for='sign-email']").css('color','');
+                    $("sign-email").css('border-color', '');
+                    $("label[for='sign-password']").css('color','');
+                    $("sign-password").css('border-color', '');
+                    $("label[for='sign-password-repeat']").css('color','');
+                    $("sign-password-repeat").css('border-color', '');
+
+                    $("#sign-email").after('<p class="email__error" id="password-error">'+result+'</p>');
+                    $("label[for='sign-email']").css('color','red');
+                    $("sign-email").css('border-color', 'red');
+                }
+
+                if (result=='Неверный старый пароль'){
+                    $("#password-error").remove();
+
+                    $("label[for='sign-email']").css('color','');
+                    $("#sign-email").css('border-color', '');
+                    $("label[for='sign-password']").css('color','');
+                    $("#sign-password").css('border-color', '');
+                    $("label[for='sign-password-repeat']").css('color','');
+                    $("#sign-password-repeat").css('border-color', '');
+
+                    $("#sign-email").after('<p class="email__error" id="password-error">'+result+'</p>');
+                    $("label[for='sign-email']").css('color','red');
+                    $("#sign-email").css('border-color', 'red');
+                }
+
+                if (result=='Введите более защищённый пароль'){
+                    $("#password-error").remove();
+
+                    $("label[for='sign-email']").css('color','');
+                    $("#sign-email").css('border-color', '');
+                    $("label[for='sign-password']").css('color','');
+                    $("#sign-password").css('border-color', '');
+                    $("label[for='sign-password-repeat']").css('color','');
+                    $("#sign-password-repeat").css('border-color', '');
+
+                    $("#sign-password").after('<p class="email__error" id="password-error">'+result+'</p>');
+                    $("label[for='sign-password']").css('color','red');
+                    $("#sign-password").css('border-color', 'red');
+                }
+
+                if (result=='Пароли не совпадают'){
+                    $("#password-error").remove();
+
+                    $("label[for='sign-email']").css('color','');
+                    $("#sign-email").css('border-color', '');
+                    $("label[for='sign-password']").css('color','');
+                    $("#sign-password").css('border-color', '');
+                    $("label[for='sign-password-repeat']").css('color','');
+                    $("#sign-password-repeat").css('border-color', '');
+
+                    $("#sign-password-repeat").after('<p class="email__error" id="password-error">'+result+'</p>');
+                    $("label[for='sign-password-repeat']").css('color','red');
+                    $("#sign-password-repeat").css('border-color', 'red');
+
+                }
+
+                if (result=='Пароль изменён'){
+                    $("#password-error").remove();
+
+                    $("label[for='sign-email']").css('color','');
+                    $("#sign-email").css('border-color', '');
+                    $("label[for='sign-password']").css('color','');
+                    $("#sign-password").css('border-color', '');
+                    $("label[for='sign-password-repeat']").css('color','');
+                    $("#sign-password-repeat").css('border-color', '');
+
+                    $('#sign-password').val('');
+                    $('#sign-email').val('');
+                    $('#sign-password-repeat').val('');
+                    MicroModal.close('change-password');
+                    MicroModal.show('change-password-success');
+
+                }
+        }
+        })
+        })
+    </script>
 {% endblock %}
