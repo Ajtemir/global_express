@@ -136,8 +136,11 @@ class ChangeProfileView(View):
             user.city = city
         if user.postcode != postcode:
             user.postcode = postcode
-        if user.email != email:
-            user.email = email
+        if not User.objects.filter(email=email).exists():
+            if user.email != email:
+                user.email = email
+        else:
+            return JsonResponse({'data': False}, status=200)
 
         if scan_in:
             user.scan_in = scan_in

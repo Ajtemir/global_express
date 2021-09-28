@@ -70,7 +70,7 @@
                                 <label for="house">
                                     Дом
                                 </label>
-                                <input type="text" id="house" placeholder="Дом" value="{{  user.apartment }}"
+                                <input type="text" id="house" placeholder="Дом" value="{{ user.apartment }}"
                                        required>
                             </div>
                         </div>
@@ -422,5 +422,130 @@
         }
         })
         })
+
+        {# ajax change profile #}
+        function validateEmail(email)
+        {
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
+
+        function validatePostcode(postcode)
+        {
+            var re = /^\d{6}$/;
+            return re.test(postcode);
+
+        }
+
+        $("#save-changes").on('click', function (){
+
+            //Get file from form.
+            var email = $("#email").val();
+            var name = $("#name").val();
+            var surname = $("#surname").val();
+            var patronymic = $("#patronymic").val();
+            var address = $("#address").val();
+            var city = $("#city").val();
+            var house = $("#house").val();
+            var postcode = $("#postcode").val();
+            var scan_out = $("#scan-out")[0].files[0];
+            var scan_in = $("#scan-in")[0].files[0];
+
+            console.log(email);
+            console.log(validateEmail(email));
+
+            //email
+            if(validateEmail(email) && email!=='' ){
+                $("label[for='email']").css('color', '');
+                $('#email').css('border-color', '');
+                $('#postcode-error').remove();
+
+            }
+            else if(email==''){}
+            else{
+                $("label[for='email']").css('color', 'red');
+                $('#email').css('border-color', 'red');
+                if($('#email-error').length == 0){
+                    $('#email').after('<p class="email__error" id="email-error">Email не верен </p>');
+                };
+            };
+
+            //Postcode
+            if(validatePostcode(postcode) && postcode!==''){
+                $("label[for='postcode']").css('color', '');
+                $('#postcode').css('border-color', '');
+                $('#postcode_error').remove();
+
+            }
+            else if(email==''){}
+            else{
+                $("label[for='postcode']").css('color', 'red');
+                $('#postcode').css('border-color', 'red');
+                if($('#postcode-error').length == 0){
+                    $('#postcode').after('<p class="email__error" id="postcode-error">Email не верен </p>');
+                };
+            };
+
+
+
+
+
+            var form_data = new FormData();
+            form_data.append('scan-in', scan_in);
+            form_data.append('scan-out', scan_out);
+            form_data.append('postcode', postcode);
+            form_data.append('city', city);
+            form_data.append('address', address);
+            form_data.append('patronymic', patronymic);
+            form_data.append('surname', surname);
+            form_data.append('name', name);
+            form_data.append('email', email);
+            form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            //Send file with ajax.
+            console.log(1);
+            console.log(email);
+            console.log(name);
+            console.log(surname);
+            console.log(house);
+            console.log(city);
+            console.log(postcode);
+
+            if(email && name && surname && house && city && postcode){
+
+            console.log(email);
+            console.log()
+                if(validateEmail(email) && validatePostcode(postcode)){
+                console.log(true);
+                    $.ajax({
+                        url:'{% url "users:change-profile" %}',
+                        type:'POST',
+    <!--                    dataType:'multipart/form-data',-->
+                        dataType:'json',
+                        cache:false,
+                        processData: false,
+                        contentType: false,
+                        data:form_data,
+                        success:function (data) {
+                            let result = data['data'];
+                            if(result){
+                            console.log(result);
+
+                            $('.personal__title').text('Личный кабинет');
+                            $('.personal__instrument').removeClass('hide');
+                            $('.personal__btn.personal__save').removeClass('show');
+
+                            MicroModal.show('edit-profile-success');
+                            }
+                        },
+                        error: function (xhr, err) {
+                           alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+                           alert("responseText: "+xhr.responseText);
+                        }
+                    });
+                }
+            }
+        });
+
+
     </script>
 {% endblock %}
