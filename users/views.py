@@ -149,6 +149,4 @@ class ChangeProfileView(View):
 
         user.save()
 
-        data = {'data': True}
-
         return JsonResponse({'data': True}, status=200)

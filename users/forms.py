@@ -26,7 +26,7 @@ class SignForm(forms.Form):
         if email:
             qs = User.objects.filter(email=email)
             if not qs.exists():
-                raise forms.ValidationError('Email не найден попробуйте снова')
+                raise forms.ValidationError(_('Email не найден попробуйте снова'))
         return email
 
     def clean_password(self):
@@ -35,7 +35,7 @@ class SignForm(forms.Form):
         if password and email:
             qs = User.objects.filter(email=email)[0]
             if not check_password(password, qs.password):
-                raise forms.ValidationError('Неверный пароль')
+                raise forms.ValidationError(_('Неверный пароль'))
         return password
 
     def get_user(self):
@@ -46,7 +46,7 @@ class SignForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
-        super(SignForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class RegistrationForm(forms.ModelForm):
@@ -218,7 +218,7 @@ class ResetForm(forms.Form):
     def clean_password2(self):
         data = self.cleaned_data
         if data['password'] != data['password2']:
-            raise forms.ValidationError('Пароли не совпадают')
+            raise forms.ValidationError(_('Пароли не совпадают'))
         return data['password2']
 
     def clean(self):
