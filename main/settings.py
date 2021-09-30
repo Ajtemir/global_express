@@ -13,7 +13,10 @@ import sys
 import os
 from pathlib import Path
 
+import environ
 from dotenv import load_dotenv
+
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +30,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+env = environ.Env()
+
+DEBUG = env.bool('MY_DEBUG_ENV_VAR', default=False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,8 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-if sys.argv[1] != 'runserver':
-    STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
+STATIC_ROOT = BASE_DIR.joinpath('static')
 STATICFILES_DIRS = [(BASE_DIR / 'staticfiles')]
 
 WEBPACK_LOADER = {
