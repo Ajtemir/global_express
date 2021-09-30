@@ -4,10 +4,10 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, FormView, TemplateView
@@ -43,7 +43,9 @@ class ForgetView(FormView):
     def form_valid(self, form):
         pk = self.kwargs.get('pk')
         token = self.kwargs.get('token')
-        user = User.objects.get(id=pk)
+
+        user = get_object_or_404(User, pk=pk)
+
         password = form.cleaned_data.get('password')
         if default_token_generator.check_token(user, token):
             user.set_password(password)
@@ -68,8 +70,7 @@ class PersonalAreaView(TemplateView):
 
 
 class ForgetPasswordView(View):
-    @staticmethod
-    def post(request):
+    def post(self, request):
         email = request.POST.get('email')
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
@@ -84,11 +85,10 @@ class ForgetPasswordView(View):
 
 
 class ChangePasswordView(View):
-    @staticmethod
-    def post(request):
+    def post(self, request):
         result = None
 
-        user = User.objects.get(email=request.user.email)
+        user = request.user
         old_password = request.POST.get('old_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
@@ -114,8 +114,7 @@ class ChangePasswordView(View):
 
 
 class ChangeProfileView(View):
-    @staticmethod
-    def post(request):
+    def post(self, request):
 
         scan_in = request.FILES.get('scan-in')
         scan_out = request.FILES.get('scan-out')
