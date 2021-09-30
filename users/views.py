@@ -1,5 +1,6 @@
 import os
 
+from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
@@ -78,7 +79,7 @@ class ForgetPasswordView(View):
             pk = user.id
             url = f'{request.get_host()}{reverse("users:reset", args=[pk, token])}'
             send_mail("Изменение пароля", f'Чтобы изменить пароль, перейдите по ссылке => {url}',
-                      os.getenv('EMAIL_SENDER'), [email], fail_silently=False)
+                      settings.EMAIL_SENDER, [email], fail_silently=False)
             return JsonResponse({'data': True}, status=200)
         else:
             return JsonResponse({'data': False})
