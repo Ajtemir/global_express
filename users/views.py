@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
@@ -9,9 +11,12 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, FormView, TemplateView
+from dotenv import load_dotenv
 
 from users.forms import SignForm, RegistrationForm, ResetForm
 
+
+load_dotenv()
 User = get_user_model()
 
 
@@ -72,7 +77,7 @@ class ForgetPasswordView(View):
             pk = user.id
             url = f'{request.get_host()}{reverse("users:reset", args=[pk, token])}'
             send_mail("Изменение пароля", f'Чтобы изменить пароль, перейдите по ссылке => {url}',
-                      'u_iskenderov@mail.ru', [email], fail_silently=False)
+                      os.getenv('EMAIL_SENDER'), [email], fail_silently=False)
             return JsonResponse({'data': True}, status=200)
         else:
             return JsonResponse({'data': False})
