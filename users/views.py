@@ -86,7 +86,7 @@ class ForgetPasswordView(View):
 class ChangePasswordView(View):
     @staticmethod
     def post(request):
-        error = None
+        result = None
 
         user = User.objects.get(email=request.user.email)
         old_password = request.POST.get('old_password')
@@ -100,17 +100,17 @@ class ChangePasswordView(View):
                     if new_password == confirm_password:
                         user.set_password(new_password)
                         user.save()
-                        error = 'Пароль изменён'
+                        result = 'Пароль изменён'
                     else:
-                        error = 'Пароли не совпадают'
+                        result = 'Пароли не совпадают'
                 except:
-                    error = 'Введите более защищённый пароль'
+                    result = 'Введите более защищённый пароль'
             else:
-                error = 'Старый и новый пароль совпадает'
+                result = 'Старый и новый пароль совпадает'
         else:
-            error = 'Неверный старый пароль'
+            result = 'Неверный старый пароль'
 
-        return JsonResponse({'data': error})
+        return JsonResponse({'data': result})
 
 
 class ChangeProfileView(View):
@@ -127,7 +127,7 @@ class ChangeProfileView(View):
         email = request.POST.get('email')
         name = request.POST.get('name')
 
-        user = User.objects.get(email=request.user)
+        user = request.user
 
         if user.first_name != name:
             user.first_name = name
