@@ -29,31 +29,31 @@
                 <h2 class="modal__title">
                     Остались вопросы?
                 </h2>
-                <form action="">
-                    <label class="sign__label">
+                <form action="" id="form">
+                    <label class="sign__label" for="email">
                         Email
                     </label>
                     <input required type="text" class="sign__input"
-                           placeholder="Введите email">
+                           placeholder="Введите email" id="email">
 
-                    <label class="sign__label">
+                    <label class="sign__label" for="phone">
                         Номер телефона
                     </label>
                     <input required type="text" class="sign__input"
-                           placeholder="+996 999 999 999 ">
+                           placeholder="996 999 999 999 " id="phone">
 
                     <label class="sign__label">
                         Как вас зовут?
                     </label>
                     <input required type="text" class="sign__input"
-                           placeholder="Ваше Имя">
+                           placeholder="Ваше Имя" id="name">
 
                     <label class="sign__label">
                         Комментарии
                     </label>
                     <textarea maxlength="324"
                               class="sign__input modal__textarea"
-                              placeholder="Можете оставить комментарий"></textarea>
+                              placeholder="Можете оставить комментарий" id="comment"></textarea>
                     <div class="symbol__counter">
                             <span class="current__length">
                                 0
@@ -114,5 +114,99 @@
     })
 </script>
 <script>
+        function validateEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function validatePhone(phone)
+        {
+            var re = /^(996)\d{9}$/;
+            return re.test(phone);
+        }
+
+        var submitted = false;
+        var form = document.getElementById("form");
+        form.onsubmit = function(){
+           if(!submitted){
+               submitted = false;
+           }
+           let email = $('#email')[0].value;
+            let phone = $('#phone')[0].value;
+            let name = $('#name')[0].value;
+            let comment = $('#comment')[0].value;
+
+            if (validateEmail(email)){
+                $('#email').css('border-color', '');
+                $("label[for='email']").css('color', '');
+                $('#email-error').remove();
+
+            } else {
+                $("label[for='email']").css('color', 'red');
+                $('#email').css('border-color', 'red');
+                if($('#email-error').length == 0){
+                    $('#email').after('<p class="email__error" id="email-error">Email не верен </p>');
+                };
+            }
+
+            if (validatePhone(phone)){
+                $('#phone').css('border-color', '');
+                $("label[for='phone']").css('color', '');
+                $('#phone-error').remove();
+            } else {
+                $("label[for='phone']").css('color', 'red');
+                $('#phone').css('border-color', 'red');
+                if($('#phone-error').length == 0){
+                    $('#phone').after('<p class="email__error" id="phone-error">Введите в формате 996999777888 </p>');
+                };
+            }
+
+
+            let data = {
+                email: email,
+                phone: phone,
+                name: name,
+                comment: comment,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            }
+
+            if(validatePhone(phone) && validateEmail(email)){
+                $.ajax({
+                method:"POST",
+                dataType: "json",
+                data: data,
+                url: "{% url "sections:FAQ" %}",
+                success: function(data){
+                    let result = data['data']
+                    console.log(result);
+                    if (result){
+                        $('#email').val('');
+                        $('#phone').val('');
+                        $('#name').val('');
+                        $('#comment').val('');
+
+                        MicroModal.close('questions');
+                        MicroModal.show('questions-success');
+
+                    }
+                    // else {
+                    //     $("#field").addClass("error");
+                    //     if ($('#must2').length == 0){
+                    //     $(".must").after('<p class="email__error" id="must2">Email не совпадает </p>');
+                    //     };
+                    //
+                    //     };
+                    }
+                })
+            }
+
+
+
+           return false;
+
+
+        }
+
+
     {#MicroModal.show('questions-success');  показать модалку что отправлено#}
 </script>
