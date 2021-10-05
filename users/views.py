@@ -59,10 +59,6 @@ def logout_view(request):
     return redirect('/')
 
 
-class BaseView(TemplateView):
-    template_name = 'pages/index.html'
-
-
 class PersonalAreaView(TemplateView):
     template_name = 'users/personal-area.html'
 

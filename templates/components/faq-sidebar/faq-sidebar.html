@@ -3,13 +3,13 @@
 <div class="faq__sidebar-wrap">
     <div class="faq__sidebar">
         <div class="faq__links">
-            <a href="#" class="faq__link about-us">
+            <a href="/about-us" class="faq__link about-us {% if request.resolver_match.url_name == "about-us" %}active{% endif %}">
                 О нас
             </a>
-            <a href="#" class="faq__link contacts">
+            <a href="/about-us" class="faq__link contacts {% if request.resolver_match.url_name == "about-us" %}active{% endif %}">
                 Контакты
             </a>
-            <a href="#" class="faq__link faq active">
+            <a href="/FAQ" class="faq__link faq {% if request.resolver_match.url_name == "FAQ" %}active{% endif %}">
                 F.A.Q
             </a>
         </div>
