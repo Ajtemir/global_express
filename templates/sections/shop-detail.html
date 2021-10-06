@@ -1,0 +1,20 @@
+<div class="grid__item">
+    <div class="shop__img">
+        <img src="{{ shop.image.url }}" alt="">
+    </div>
+    <a href="{{ shop.url }}" target="_blank" style="text-decoration:none;">
+        <div class="grid__item-info">
+            <div class="shop__item-head">
+                <div class="shop__item-img">
+                    <img src="{{ shop.icon.url }}" alt="">
+                </div>
+                <h5 class="shop__item-ttl">
+                    {{ shop.name }}
+                </h5>
+            </div>
+            <p class="shop__item-text">
+                {{ shop.description }}
+            </p>
+        </div>
+    </a>
+</div>

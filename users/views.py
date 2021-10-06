@@ -12,12 +12,10 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, FormView, TemplateView
-from dotenv import load_dotenv
 
 from users.forms import SignForm, RegistrationForm, ResetForm
 
 
-load_dotenv()
 User = get_user_model()
 
 
