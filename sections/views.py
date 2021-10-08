@@ -1,7 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, Http404
 from django.views.generic import TemplateView, ListView
-from django_filters.views import FilterView
 
 from sections.filters import ShopFilter
 from sections.models import Question, Shop

@@ -1,5 +1,3 @@
-import os
-
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.hashers import check_password
