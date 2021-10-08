@@ -18,32 +18,33 @@
                             Магазины
                         </h2>
                         <div class="shop__filter">
-                            <a href="/shop" class="filter__item active">
+                            <a href="/shop" class="filter__item {% if request.resolver_match.url_name == 'shop' %}active{% endif %}">
                                 Все
                             </a>
-{#                            {% for country in filter.form.country %}#}
-{#                            country#}
-{#                            {% endfor %}#}
                             {% for country in countries %}
-                                <a href="#" class="filter__item">
-                                    {{ country.name }}
-                                </a>
+                                <form action="" method="GET">
+                                    <button type="submit" class="filter__item" name="country" value="{{ country.id }}">
+                                        {{ country }}
+                                    </button>
+                                </form>
                             {% endfor %}
                         </div>
                     </div>
 
                     <div class="shop__grid">
 
-                        {% for shop in shops %}
+
                             {% include 'sections/shop-detail.html' %}
-                        {% endfor %}
+
 
                     </div>
+                {% if page_obj.has_next %}
                     <div class="shop__more-wrap">
-                        <a href="#" class="shop__more">
+                        <a href="" class="shop__more" id="more" onclick="return false">
                             Больше Магазинов!
                         </a>
                     </div>
+                {% endif %}
                 </div>
             </div>
         </div>
@@ -52,4 +53,22 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+if(page) {
+    $('#more').on('click', function () {
+        $.ajax({
+            type: "GET",
+            url: './',
+            data: {
+                page: page,
+                {% if country_id %}country: {{ country_id }}{% endif %}
+
+            },
+            success: function (data) {
+                $('.shop__grid').append(data);
+            },
+        });
+    });
+}
+</script>
 {% endblock %}
