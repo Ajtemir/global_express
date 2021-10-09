@@ -3,7 +3,7 @@ from django.http import JsonResponse, Http404
 from django.views.generic import TemplateView, ListView, DetailView
 
 from sections.filters import ShopFilter, NewsFilter
-from sections.models import Question, Shop, News, AboutUsInformation, HowItWorks
+from sections.models import Question, Shop, News, AboutUsInformation, HowItWorks, FaqBlock
 
 
 class BaseView(TemplateView):
@@ -103,8 +103,9 @@ class ShopListView(ListView):
         return context
 
 
-class FaqView(TemplateView):
+class FaqView(ListView):
     template_name = 'sections/FAQ.html'
+    queryset = FaqBlock.objects.all()
 
     '''AJAX request'''
 

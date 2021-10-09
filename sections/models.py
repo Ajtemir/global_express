@@ -134,3 +134,28 @@ class ImagesHowItWorks(models.Model):
     def __str__(self):
         return self.parent.title
 
+
+class FaqBlock(models.Model):
+    title = models.CharField(verbose_name=_('название'), max_length=50)
+
+    class Meta:
+        verbose_name = _('FAQ блок')
+        verbose_name_plural = _('FAQ блоки')
+
+    def __str__(self):
+        return self.title
+
+
+class FaqSubBlock(models.Model):
+    title = models.CharField(verbose_name=_('название'), max_length=50)
+    description = models.TextField(verbose_name=_('описание'))
+    parent_block = models.ForeignKey(FaqBlock, verbose_name=_('родительский блок'),
+                                     on_delete=models.CASCADE, related_name='sub_blocks')
+
+    class Meta:
+        verbose_name = _('FAQ подблок')
+        verbose_name_plural = _('FAQ подблоки')
+
+    def __str__(self):
+        return self.parent_block.title
+
