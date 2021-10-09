@@ -13,6 +13,7 @@ class Question(models.Model):
                                blank=True, verbose_name=_('Коментарий'))
 
     class Meta:
+        db_table = 'question'
         verbose_name = _('Вопрос')
         verbose_name_plural = _('Вопросы')
 
@@ -24,6 +25,7 @@ class Country(models.Model):
     name = models.CharField(max_length=50, verbose_name=_('название страны'))
 
     class Meta:
+        db_table = 'country'
         verbose_name = _('страна')
         verbose_name_plural = _('страны')
 
@@ -43,6 +45,7 @@ class Shop(models.Model):
                                 related_name='shops', verbose_name=_('страна'))
 
     class Meta:
+        db_table = 'shop'
         verbose_name = _('Магазин')
         verbose_name_plural = _('Магазины')
 
@@ -55,6 +58,7 @@ class Category(models.Model):
                             max_length=50)
 
     class Meta:
+        db_table = 'category'
         verbose_name = _('категория')
         verbose_name_plural = _('категории')
 
@@ -72,6 +76,7 @@ class News(models.Model):
                                  related_name='news', verbose_name=_('категория'))
 
     class Meta:
+        db_table = 'news'
         verbose_name = _('новости')
         verbose_name_plural = _('новости')
 
@@ -88,6 +93,7 @@ class AboutUsInformation(models.Model):
     video = models.URLField(verbose_name=_('видео'))
 
     class Meta:
+        db_table = 'about_us'
         verbose_name = _('информация о нас')
         verbose_name_plural = _('информация о нас')
 
@@ -102,6 +108,7 @@ class ImagesAboutUs(models.Model):
                                on_delete=models.CASCADE, related_name='images')
 
     class Meta:
+        db_table = 'images_about_us'
         verbose_name = _('фотография ABOUT_US')
         verbose_name_plural = _('фотографии ABOUT_US')
 
@@ -114,6 +121,7 @@ class HowItWorks(models.Model):
     description = models.TextField(verbose_name=_('описание'))
 
     class Meta:
+        db_table = 'how_it_works'
         verbose_name = _('как это работает')
         verbose_name_plural = _('как это работает')
 
@@ -128,6 +136,7 @@ class ImagesHowItWorks(models.Model):
                                on_delete=models.CASCADE, related_name='images')
 
     class Meta:
+        db_table = 'images_how_it_works'
         verbose_name = _('фотография HowItWorks')
         verbose_name_plural = _('фотографии HowItWorks')
 
@@ -139,6 +148,7 @@ class FaqBlock(models.Model):
     title = models.CharField(verbose_name=_('название'), max_length=50)
 
     class Meta:
+        db_table = 'faq_block'
         verbose_name = _('FAQ блок')
         verbose_name_plural = _('FAQ блоки')
 
@@ -153,6 +163,7 @@ class FaqSubBlock(models.Model):
                                      on_delete=models.CASCADE, related_name='sub_blocks')
 
     class Meta:
+        db_table = 'faq_sub_block'
         verbose_name = _('FAQ подблок')
         verbose_name_plural = _('FAQ подблоки')
 
