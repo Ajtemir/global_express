@@ -3,7 +3,7 @@ from django.http import JsonResponse, Http404
 from django.views.generic import TemplateView, ListView, DetailView
 
 from sections.filters import ShopFilter, NewsFilter
-from sections.models import Question, Shop, News, AboutUsInformation
+from sections.models import Question, Shop, News, AboutUsInformation, HowItWorks
 
 
 class BaseView(TemplateView):
@@ -21,6 +21,11 @@ class AboutUsView(TemplateView):
 
 class HowWorksView(TemplateView):
     template_name = 'sections/how-works.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = HowItWorks.objects.first()
+        return context
 
 
 class NewsListView(ListView):
@@ -41,8 +46,6 @@ class NewsListView(ListView):
                                          queryset=self.get_queryset())
         pagination = Paginator(news_list.qs, self.paginate_by)
         page = self.request.GET.get('page')
-        print(self.request.GET.get('category'))
-        print(page)
         try:
             news_list = pagination.page(page)
         except PageNotAnInteger:
