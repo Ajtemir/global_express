@@ -81,17 +81,22 @@
                                     Другие новости
                                 </h3>
                                 <div class="det__sidebar-flex">
+                                    {% for news in other_news %}
+                                    <a href="{{ news.get_absolute_url }}" style="text-decoration: none;">
                                     <div class="sidebar__item">
                                         <div class="sidebar__img">
-                                            <img src="{% static 'img/png/delivery.png' %}" alt="">
+                                            <img src="{{ news.image.url }}" alt="">
                                         </div>
                                         <div class="sidebar__item-ttl">
-                                            Вещи с самых популярных сайтов в мире
+                                            {{ news.title }}
                                         </div>
                                         <div class="sidebar__item-date">
-                                            22.05.2020 18:36
+                                            {{ news.timestamp }}
                                         </div>
                                     </div>
+                                    </a>
+
+                                    {% endfor %}
 {#                                    <div class="sidebar__item">#}
 {#                                        <div class="sidebar__img">#}
 {#                                            <img src="{% static 'img/png/delivery.png' %}" alt="">#}
@@ -115,7 +120,7 @@
 {#                                        </div>#}
 {#                                    </div>#}
                                 </div>
-                                <a href="https://www.instagram.com/?url=https://www.drdrop.co/" class="sidebar__more">
+                                <a href="/news" class="sidebar__more">
                                     Больше новостей
                                 </a>
                             </div>

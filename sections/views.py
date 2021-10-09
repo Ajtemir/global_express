@@ -54,7 +54,13 @@ class NewsListView(ListView):
 
 class DetailNewsView(DetailView):
     template_name = 'sections/detail-news.html'
-    queryset = News.objects.all()
+    model = News
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        other_news = self.model.objects.exclude(id=context['object'].id).order_by('-id')[:3]
+        context['other_news'] = other_news
+        return context
 
 
 class ShopListView(ListView):
