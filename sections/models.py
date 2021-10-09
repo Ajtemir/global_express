@@ -1,7 +1,8 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from sections.media_path import shop_icon, shop_image
+from sections.media_path import shop_icon, shop_image, news_image
 
 
 class Question(models.Model):
@@ -47,3 +48,35 @@ class Shop(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+    name = models.CharField(verbose_name=_('название категории новостей'),
+                            max_length=50)
+
+    class Meta:
+        verbose_name = _('категория')
+        verbose_name_plural = _('категории')
+
+    def __str__(self):
+        return self.name
+
+
+class News(models.Model):
+    title = models.CharField(verbose_name=_('название'), max_length=50)
+    image = models.ImageField(verbose_name=_('фотография'), upload_to=news_image)
+    timestamp = models.DateTimeField(verbose_name=_('дата и время'), blank=True,
+                                     auto_now_add=True)
+    description = models.TextField(verbose_name=_('описание'))
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+                                 related_name='news', verbose_name=_('категория'))
+
+    class Meta:
+        verbose_name = _('новости')
+        verbose_name_plural = _('новости')
+
+    def get_absolute_url(self):
+        return reverse('sections:detail-news', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return self.title

@@ -17,137 +17,31 @@
                         <h2 class="shop__title">
                             Новости и Акции
                         </h2>
+
                         <div class="shop__filter">
-                            <a href="#" class="filter__item active">
+                            <a href="/news" class="filter__item">
                                 Все
                             </a>
-                            <a href="#" class="filter__item">
-                                Распродажи
-                            </a>
-                            <a href="#" class="filter__item">
-                                Граница
-                            </a>
-                            <a href="#" class="filter__item">
-                                Китай
-                            </a>
-                            <a href="#" class="filter__item">
-                                Китай
-                            </a>
-                            <a href="#" class="filter__item">
-                                Турция
-                            </a>
-                            <a href="#" class="filter__item">
-                                Корея
-                            </a>
-                            <a href="#" class="filter__item">
-                                Китай
-                            </a>
-                            <a href="#" class="filter__item">
-                                +4
-                            </a>
+                            {% for category in categories %}
+                                <form action="" method="GET">
+                                    <button type="submit" class="filter__item" name="category" value="{{ category.id }}">
+                                        {{ category }}
+                                    </button>
+                                </form>
+                            {% endfor %}
                         </div>
+
                     </div>
                     <div class="shop__grid">
-                        <div class="grid__item">
-                            <div class="shop__img">
-                                <img src="{% static 'img/png/delivery.png' %}" alt="">
-                            </div>
-                            <div class="grid__item-info news__item-info">
-                                <div class="grid__item-date">
-                                    22.05.2020 18:36
-                                </div>
-                                <p class="news__item-text">
-                                    Apple — американская корпорация, производитель персональных и планшетных
-                                    компьютеров,
-                                    аудиоплееров, смартфонов
-                                    аудиоплееров, смартфонов
-                                    аудиоплееров, смартфонов
-                                    аудиоплееров, смартфонов
-                                    аудиоплееров, смартфонов
-                                </p>
-                            </div>
-                        </div>
-                        <div class="grid__item">
-                            <div class="shop__img">
-                                <img src="{% static 'img/png/delivery.png' %}" alt="">
-                            </div>
-                            <div class="grid__item-info news__item-info">
-                                <div class="grid__item-date">
-                                    22.05.2020 18:36
-                                </div>
-                                <p class="news__item-text">
-                                    Apple — американская корпорация, производитель персональных и планшетных
-                                    компьютеров,
-                                    аудиоплееров, смартфонов
-                                </p>
-                            </div>
-                        </div>
-                        <div class="grid__item">
-                            <div class="shop__img">
-                                <img src="{% static 'img/png/delivery.png' %}" alt="">
-                            </div>
-                            <div class="grid__item-info news__item-info">
-                                <div class="grid__item-date">
-                                    22.05.2020 18:36
-                                </div>
-                                <p class="news__item-text">
-                                    Apple — американская корпорация, производитель персональных и планшетных
-                                    компьютеров,
-                                    аудиоплееров, смартфонов
-                                </p>
-                            </div>
-                        </div>
-                        <div class="grid__item">
-                            <div class="shop__img">
-                                <img src="{% static 'img/png/delivery.png' %}" alt="">
-                            </div>
-                            <div class="grid__item-info news__item-info">
-                                <div class="grid__item-date">
-                                    22.05.2020 18:36
-                                </div>
-                                <p class="news__item-text">
-                                    Apple — американская корпорация, производитель персональных и планшетных
-                                    компьютеров,
-                                    аудиоплееров, смартфонов
-                                </p>
-                            </div>
-                        </div>
-                        <div class="grid__item">
-                            <div class="shop__img">
-                                <img src="{% static 'img/png/delivery.png' %}" alt="">
-                            </div>
-                            <div class="grid__item-info news__item-info">
-                                <div class="grid__item-date">
-                                    22.05.2020 18:36
-                                </div>
-                                <p class="news__item-text">
-                                    Apple — американская корпорация, производитель персональных и планшетных
-                                    компьютеров,
-                                    аудиоплееров, смартфонов
-                                </p>
-                            </div>
-                        </div>
-                        <div class="grid__item">
-                            <div class="shop__img">
-                                <img src="{% static 'img/png/delivery.png' %}" alt="">
-                            </div>
-                            <div class="grid__item-info news__item-info">
-                                <div class="grid__item-date">
-                                    22.05.2020 18:36
-                                </div>
-                                <p class="news__item-text">
-                                    Apple — американская корпорация, производитель персональных и планшетных
-                                    компьютеров,
-                                    аудиоплееров, смартфонов
-                                </p>
-                            </div>
-                        </div>
+                        {% include 'sections/news-object.html' %}
                     </div>
+                    {% if page_obj.has_next %}
                     <div class="shop__more-wrap">
-                        <a href="#" class="shop__more">
+                        <a href="#" class="shop__more" onclick="return false" id="more">
                             Больше новостей!
                         </a>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -156,4 +50,24 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+if(page) {
+    $('#more').on('click', function () {
+        $.ajax({
+            type: "GET",
+            url: './',
+            data: {
+                page: page,
+                {% if category_id %}category: {{ category_id }}{% endif %}
+
+            },
+            success: function (data) {
+                $('.shop__grid').append(data);
+
+
+            },
+        });
+    });
+}
+</script>
 {% endblock %}

@@ -16,19 +16,14 @@
                     <div class="det__news-flex">
                         <div class="det__news-main">
                             <h2 class="det__news-ttl">
-                                Подзаправиться кофе: доставка еды и напитков в Яндекс.Заправках
+                                {{ object.title }}
                             </h2>
                             <div class="det__news-date">
-                                22.05.2020 18:36
+                                {{ object.timestamp }}
                             </div>
-                            <img src="{% static 'img/png/delivery.png' %}" alt="" class="det__news-img">
+                            <img src="{{ object.image.url }}" alt="" class="det__news-img">
                             <p class="det__news-text">
-                                Проблема в том, что у яндекса один вид наказания - отсечь голову, все.
-                                Маркет отличный маркетплейс, технологически очень развит, более развит чем кто либо в
-                                РФ, дает массу клиентов, но в случае малейшего косяка от магазина сразу его блокирует.
-                                Я об этом писал еще в 2018 году с тех пор мало что изменилось
-                                , но есть и позитивные сдвиги, ввели личных менеджеров, они помогают решать такие
-                                вопросы намного оперативнее.
+                                {{ object.description }}
                             </p>
                             <div class="share">
                                 <h4 class="share__title">
@@ -97,30 +92,30 @@
                                             22.05.2020 18:36
                                         </div>
                                     </div>
-                                    <div class="sidebar__item">
-                                        <div class="sidebar__img">
-                                            <img src="{% static 'img/png/delivery.png' %}" alt="">
-                                        </div>
-                                        <div class="sidebar__item-ttl">
-                                            Вещи с самых популярных сайтов в мире
-                                        </div>
-                                        <div class="sidebar__item-date">
-                                            22.05.2020 18:36
-                                        </div>
-                                    </div>
-                                    <div class="sidebar__item">
-                                        <div class="sidebar__img">
-                                            <img src="{% static 'img/png/delivery.png' %}" alt="">
-                                        </div>
-                                        <div class="sidebar__item-ttl">
-                                            Вещи с самых популярных сайтов в мире
-                                        </div>
-                                        <div class="sidebar__item-date">
-                                            22.05.2020 18:36
-                                        </div>
-                                    </div>
+{#                                    <div class="sidebar__item">#}
+{#                                        <div class="sidebar__img">#}
+{#                                            <img src="{% static 'img/png/delivery.png' %}" alt="">#}
+{#                                        </div>#}
+{#                                        <div class="sidebar__item-ttl">#}
+{#                                            Вещи с самых популярных сайтов в мире#}
+{#                                        </div>#}
+{#                                        <div class="sidebar__item-date">#}
+{#                                            22.05.2020 18:36#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="sidebar__item">#}
+{#                                        <div class="sidebar__img">#}
+{#                                            <img src="{% static 'img/png/delivery.png' %}" alt="">#}
+{#                                        </div>#}
+{#                                        <div class="sidebar__item-ttl">#}
+{#                                            Вещи с самых популярных сайтов в мире#}
+{#                                        </div>#}
+{#                                        <div class="sidebar__item-date">#}
+{#                                            22.05.2020 18:36#}
+{#                                        </div>#}
+{#                                    </div>#}
                                 </div>
-                                <a href="#" class="sidebar__more">
+                                <a href="https://www.instagram.com/?url=https://www.drdrop.co/" class="sidebar__more">
                                     Больше новостей
                                 </a>
                             </div>

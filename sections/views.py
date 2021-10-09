@@ -1,9 +1,9 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse, Http404
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
-from sections.filters import ShopFilter
-from sections.models import Question, Shop
+from sections.filters import ShopFilter, NewsFilter
+from sections.models import Question, Shop, News
 
 
 class BaseView(TemplateView):
@@ -18,12 +18,43 @@ class HowWorksView(TemplateView):
     template_name = 'sections/how-works.html'
 
 
-class NewsView(TemplateView):
+class NewsListView(ListView):
     template_name = 'sections/news.html'
+    model = News
+    context_object_name = 'news_list'
+    filterset_class = NewsFilter
+    paginate_by = 3
+
+    def get_queryset(self):
+        if self.request.is_ajax():
+            self.template_name = 'sections/news-object.html'
+        return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        news_list = self.filterset_class(self.request.GET,
+                                         queryset=self.get_queryset())
+        pagination = Paginator(news_list.qs, self.paginate_by)
+        page = self.request.GET.get('page')
+        print(self.request.GET.get('category'))
+        print(page)
+        try:
+            news_list = pagination.page(page)
+        except PageNotAnInteger:
+            news_list = pagination.page(1)
+        except EmptyPage:
+            raise Http404("That page contains no results")
+
+        context['news_list'] = news_list.object_list
+        context['category_id'] = self.request.GET.get('category')
+        context['page_obj'] = news_list
+
+        return context
 
 
-class DetailNewsView(TemplateView):
+class DetailNewsView(DetailView):
     template_name = 'sections/detail-news.html'
+    queryset = News.objects.all()
 
 
 class ShopListView(ListView):

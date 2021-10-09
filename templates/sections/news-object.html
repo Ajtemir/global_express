@@ -1,0 +1,31 @@
+{% load static %}
+{% for news in news_list %}
+    <div class="grid__item">
+        <div class="shop__img">
+            <img src="{{ news.image.url }}" alt="">
+        </div>
+        <a href="{{ news.get_absolute_url }}" style="text-decoration:none;">
+        <div class="grid__item-info news__item-info">
+            <div class="grid__item-date">
+                {{ news.timestamp }}
+            </div>
+            <p class="news__item-text">
+                {{ news.title }}
+            </p>
+        </div>
+        </a>
+    </div>
+{% empty %}
+    Пока что нет новостей...
+{% endfor %}
+<script>
+
+{% if page_obj.has_next %}
+    page = {{ page_obj.next_page_number }};
+{% else %}
+    $("#more").css('display', 'none');
+{% endif %}
+
+</script>
+
+
