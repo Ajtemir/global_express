@@ -3,7 +3,7 @@ from django.http import JsonResponse, Http404
 from django.views.generic import TemplateView, ListView, DetailView
 
 from sections.filters import ShopFilter, NewsFilter
-from sections.models import Question, Shop, News
+from sections.models import Question, Shop, News, AboutUsInformation
 
 
 class BaseView(TemplateView):
@@ -12,6 +12,13 @@ class BaseView(TemplateView):
 
 class AboutUsView(TemplateView):
     template_name = 'sections/about-us.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = AboutUsInformation.objects.first()
+        # object = AboutUsInformation.objects.first()
+        # print(object.images.all())
+        return context
 
 
 class HowWorksView(TemplateView):

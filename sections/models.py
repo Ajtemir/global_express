@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from sections.media_path import shop_icon, shop_image, news_image
+from sections.media_path import shop_icon, shop_image, news_image, about_us_image
 
 
 class Question(models.Model):
@@ -80,3 +80,31 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class AboutUsInformation(models.Model):
+    title = models.CharField(verbose_name=_('название'), max_length=50)
+    description = models.TextField(verbose_name=_('описание'))
+    video = models.URLField(verbose_name=_('видео'))
+
+    class Meta:
+        verbose_name = _('информация о нас')
+        verbose_name_plural = _('информация о нас')
+
+    def __str__(self):
+        return self.title
+
+
+class ImagesAboutUs(models.Model):
+    image = models.ImageField(verbose_name=_('фотография'),
+                              upload_to=about_us_image)
+    parent = models.ForeignKey(AboutUsInformation, verbose_name=_('о нас'),
+                               on_delete=models.CASCADE, related_name='images')
+
+    class Meta:
+        verbose_name = _('фотография ABOUT_US')
+        verbose_name_plural = _('фотографии ABOUT_US')
+
+    def __str__(self):
+        return self.parent.title
+

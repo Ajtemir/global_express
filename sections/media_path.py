@@ -17,3 +17,9 @@ def news_image(instance, file_name: str):
     ext = file_name.split('.')[-1]
     file_name = f'{uuid.uuid4()}.{ext}'
     return f'news_image/{file_name}'
+
+
+def about_us_image(instance, file_name: str):
+    ext = file_name.split('.')[-1]
+    file_name = f'{uuid.uuid4()}.{ext}'
+    return f'about_us_images/{file_name}'

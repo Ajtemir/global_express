@@ -16,29 +16,19 @@
                 <div class="faq__main">
                     <div class="about__us-content">
                         <h3 class="about__title">
-                            Кто мы и чем мы занимаемся?
+                            {{ object.title }}
                         </h3>
                         <p class="faq__text">
-                            Основана Джеффом Безосом 5 июля 1994 года как интернет-магазин по продаже книг, но позже
-                            диверсифицировалась, начав продавать видео, MP3, аудиокниги (как потоковым способом, так и
-                            через возможность загрузки), программное обеспечение, видеоигры, электронику, одежду,
-                            мебель, еду, игрушки и ювелирные изделия. Компания также владеет издательским подразделением
-                            Amazon Publishing, киностудией Amazon Studios, производит линии бытовой электроники, включая
-                            электронные ридеры Kindle, планшеты Amazon Fire[en], Fire TV[en] и смарт-динамик Echo, и
-                            является крупнейшим в мире поставщиком услуг в моделях IaaS и PaaS (Amazon Web Services)[9].
+                            {{ object.description }}
                         </p>
                         <div class="faq__slider">
                             <div class="swiper-container faq__swiper-container">
                                 <div class="swiper-wrapper faq__swiper-wrapper">
+                                    {% for image in object.images.all %}
                                     <div class="swiper-slide faq__swiper-slide">
-                                        <img src="{% static 'img/png/delivery.png' %}" alt="">
+                                        <img src="{{ image.image.url }}" alt="">
                                     </div>
-                                    <div class="swiper-slide faq__swiper-slide">
-                                        <img src="{% static 'img/png/delivery.png' %}" alt="">
-                                    </div>
-                                    <div class="swiper-slide faq__swiper-slide">
-                                        <img src="{% static 'img/png/delivery.png' %}" alt="">
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="swiper-button-next faq__swiper-next faq__swiper-arrow">
@@ -58,7 +48,7 @@
                             <div class="swiper-pagination faq__swiper-pagination"></div>
                         </div>
                         <div class="faq__video">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/ne4IR01CZrw"
+                            <iframe width="560" height="315" src="{{ object.video }}"
                                     title="YouTube video player" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen></iframe>
