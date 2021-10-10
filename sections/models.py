@@ -57,7 +57,8 @@ class Shop(models.Model):
 class Category(models.Model):
     name = models.CharField(verbose_name=_('название категории новостей'),
                             max_length=50)
-    slug = models.SlugField(verbose_name=_('поле slug'), max_length=60, blank=True)
+    slug = models.SlugField(verbose_name=_('поле slug'), max_length=60,
+                            blank=True, unique=True)
 
     class Meta:
         db_table = 'category'
@@ -75,6 +76,7 @@ class Category(models.Model):
 
 class News(models.Model):
     title = models.CharField(verbose_name=_('название'), max_length=50)
+    slug = models.SlugField(verbose_name=_('поле slug'), unique=True, blank=True)
     image = models.ImageField(verbose_name=_('фотография'), upload_to=news_image)
     timestamp = models.DateTimeField(verbose_name=_('дата и время'), blank=True,
                                      auto_now_add=True)
@@ -88,10 +90,15 @@ class News(models.Model):
         verbose_name_plural = _('новости')
 
     def get_absolute_url(self):
-        return reverse('sections:detail-news', kwargs={'pk': self.pk})
+        return reverse('sections:detail-news', kwargs={'slug': self.slug})
 
     def get_other_news(self):
         return News.objects.exclude(pk=self.pk).order_by('-id')[:3]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
