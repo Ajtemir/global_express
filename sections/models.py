@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from pytils.translit import slugify
 
 from sections.media_path import shop_icon, shop_image, news_image, about_us_image, how_it_work_image
 
@@ -56,11 +57,17 @@ class Shop(models.Model):
 class Category(models.Model):
     name = models.CharField(verbose_name=_('название категории новостей'),
                             max_length=50)
+    slug = models.SlugField(verbose_name=_('поле slug'), max_length=60, blank=True)
 
     class Meta:
         db_table = 'category'
         verbose_name = _('категория')
         verbose_name_plural = _('категории')
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -82,6 +89,9 @@ class News(models.Model):
 
     def get_absolute_url(self):
         return reverse('sections:detail-news', kwargs={'pk': self.pk})
+
+    def get_other_news(self):
+        return News.objects.exclude(pk=self.pk).order_by('-id')[:3]
 
     def __str__(self):
         return self.title
