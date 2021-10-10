@@ -18,7 +18,7 @@
     <div class="sign registration">
         <div class="sign__wrap">
             <div class="sign__inner">
-                <form action="." id="reg__from" method="POST">
+                <form action="." id="reg__from" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="sign__content swiper-container registration-slider">
                         <div class="swiper-wrapper">

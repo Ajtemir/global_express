@@ -34,10 +34,6 @@ class SignForm(forms.Form):
         email = self.cleaned_data.get('email')
         if password and email:
             qs = User.objects.filter(email=email)[0]
-            print(qs.password)
-            print(password)
-            print(check_password(password, qs.password))
-            print(check_password(qs.password, password))
             if not check_password(password, qs.password):
                 raise forms.ValidationError(_('Неверный пароль'))
         return password
@@ -178,16 +174,20 @@ class RegistrationForm(forms.ModelForm):
     def clean_scan_in(self):
         scan_in = self.cleaned_data.get('scan_in', False)
         if scan_in:
-            if scan_in._size > 4*1024*1024:
+            if scan_in.size > 4*1024*1024:
                 raise forms.ValidationError(_('File too big'))
             return scan_in
+        else:
+            raise forms.ValidationError(_('no photo'))
 
     def clean_scan_out(self):
         scan_out = self.cleaned_data.get('scan_out', False)
         if scan_out:
-            if scan_out._size > 4*1024*1024:
+            if scan_out.size > 4*1024*1024:
                 raise forms.ValidationError(_('File too big'))
             return scan_out
+        else:
+            raise forms.ValidationError(_('no photo'))
 
     def clean(self):
         data = self.cleaned_data
