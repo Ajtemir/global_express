@@ -34,6 +34,10 @@ class SignForm(forms.Form):
         email = self.cleaned_data.get('email')
         if password and email:
             qs = User.objects.filter(email=email)[0]
+            print(qs.password)
+            print(password)
+            print(check_password(password, qs.password))
+            print(check_password(qs.password, password))
             if not check_password(password, qs.password):
                 raise forms.ValidationError(_('Неверный пароль'))
         return password
@@ -193,6 +197,8 @@ class RegistrationForm(forms.ModelForm):
         return super().clean()
 
     def save(self, *args, **kwargs):
+        user = super().save(commit=False)
+        user.set_password(user.password)
         return super().save(*args, **kwargs)
 
     class Meta:
