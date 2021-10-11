@@ -10,7 +10,7 @@ User = get_user_model()
 class SignForm(forms.Form):
 
     email = forms.EmailField(required=True,
-                             widget=forms.TextInput(attrs={
+                             widget=forms.EmailInput(attrs={
                                  'class': 'sign__input',
                                  'placeholder': 'Email или ваша почта',
                                  'id': 'sign_email'}))
