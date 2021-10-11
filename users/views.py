@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
@@ -55,8 +56,9 @@ def logout_view(request):
     return redirect('/')
 
 
-class PersonalAreaView(TemplateView):
+class PersonalAreaView(LoginRequiredMixin, TemplateView):
     template_name = 'users/personal-area.html'
+    login_url = '/sign'
 
 
 """AJAX-VIEWS"""
