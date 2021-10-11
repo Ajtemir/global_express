@@ -7,8 +7,20 @@ from sections.models import (Question, Shop, Country, News, Category,
 admin.site.register(Question)
 admin.site.register(Shop)
 admin.site.register(Country)
-admin.site.register(News)
-admin.site.register(Category)
+
+
+class NewsAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("title",)}
+
+
+admin.site.register(News, NewsAdmin)
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
+
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(AboutUsInformation)
 admin.site.register(ImagesAboutUs)
 admin.site.register(HowItWorks)
