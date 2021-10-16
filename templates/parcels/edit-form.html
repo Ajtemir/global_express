@@ -1,0 +1,79 @@
+<form action="" id="edit-form">
+    {{ edit_form.id }}
+    {% csrf_token %}
+    <label class="sign__label">
+        Трекномер*
+    </label>
+    <input required type="text" class="sign__input"
+           placeholder="Ваш трек номер" value="{{ parcel_track }}" readonly>
+{#    {{ edit_form.track }}#}
+
+    <label class="sign__label">
+        Название магазина*
+    </label>
+{#    <input required type="text" class="sign__input"#}
+{#           placeholder="Например Zara, HM">#}
+    {{ edit_form.name }}
+
+    <label class="sign__label">
+        Вид товара*
+    </label>
+{#    <input required type="text" class="sign__input"#}
+{#           placeholder="Например Техника">#}
+    {{ edit_form.type }}
+    <label class="sign__label">
+        Страна*
+    </label>
+    <div class="select__wrap">
+        <select></select>
+        <div class="current__select-wrap">
+{#            <input type="text"#}
+{#                   class="sign__input country__input"#}
+{#                   placeholder="Выберите страну"#}
+{#                   readonly>#}
+            {{ edit_form.store }}
+        </div>
+        <div class="select__option-wrap">
+            {% for country in countries %}
+            <div class="select__option">
+                {{ country }}
+            </div>
+            {% endfor %}
+{#            <div class="select__option">#}
+{#                Турция#}
+{#            </div>#}
+{#            <div class="select__option">#}
+{#                Китай#}
+{#            </div>#}
+        </div>
+    </div>
+
+    <label class="sign__label">
+        Веб сайт*
+    </label>
+{#    <input required type="text" class="sign__input"#}
+{#           placeholder="www.primer.com">#}
+    {{ edit_form.site }}
+
+    <label class="sign__label">
+        Комментарии
+    </label>
+{#    <textarea maxlength="324"#}
+{#              class="sign__input modal__textarea"#}
+{#              placeholder="Можете оставить комментарий"></textarea>#}
+    {{ edit_form.comment }}
+    <div class="symbol__counter">
+                            <span class="current__length">
+                                0
+                            </span>
+        /
+        <span class="total__length">
+                                324
+                            </span>
+    </div>
+
+    <button type="submit" class="personal__btn modal__btn" value="edit">
+        Сохранить изменения
+    </button>
+</form>
+

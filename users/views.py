@@ -58,7 +58,7 @@ def logout_view(request):
 
 class PersonalAreaView(LoginRequiredMixin, TemplateView):
     template_name = 'users/personal-area.html'
-    login_url = '/sign'
+    login_url = '/sign/'
 
 
 """AJAX-VIEWS"""

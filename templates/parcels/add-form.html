@@ -1,0 +1,110 @@
+<form action="POST" id="add-form" name="add-form">
+    {% csrf_token %}
+    <label class="sign__label">
+        ФИО*
+    </label>
+    {{ form.recipient }}
+
+    <label class="sign__label" {% if form.track.errors %}style="color: red;"{% endif %}>
+        Трекномер*
+    </label>
+    {{ form.track }}
+    {% if form.track.errors %}
+        <p class="email__error">
+            {% for error in form.track.errors %}
+                {{ error }}
+            {% endfor %}
+        </p>
+        <script>$('#id_track').css('border-color', 'red');</script>
+    {% endif %}
+    <label class="sign__label">
+        Наименование*
+    </label>
+    {{ form.name }}
+
+    <label class="sign__label" {% if form.price.errors %}style="color: red;"{% endif %}>
+        Общая стоимость*
+    </label>
+    {{ form.price }}
+    {% if form.price.errors %}
+        <p class="email__error">
+            {% for error in form.price.errors %}
+                {{ error }}
+            {% endfor %}
+        </p>
+        <script>$('#id_price').css('border-color', 'red');</script>
+    {% endif %}
+    <label class="sign__label">
+        Вид товара*
+    </label>
+    {{ form.type }}
+
+    <label class="sign__label">
+        Страна*
+    </label>
+    <div class="select__wrap">
+        <select required></select>
+        <div class="current__select-wrap">
+            {{ form.store }}
+        </div>
+
+        <div class="select__option-wrap">
+            {% for country in countries %}
+                <div class="select__option">
+                    {{ country.name }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <label class="sign__label">
+        Веб сайт*
+    </label>
+    {{ form.site }}
+
+    <label class="sign__label">
+        Комментарии
+    </label>
+    {{ form.comment }}
+    <div class="symbol__counter">
+                            <span class="current__length">
+                                0
+                            </span>
+        /
+        <span class="total__length">
+                                324
+                            </span>
+    </div>
+
+    <button type="submit" class="personal__btn modal__btn" name="add-button" value="add">
+        Сохранить изменения
+    </button>
+</form>
+
+
+
+{#<script>#}
+{#    $(document).on('click', '.clear_add', function (){#}
+{#        document.getElementById('add-form').reset();#}
+{#    });#}
+{#</script>#}
+{# <script>#}
+{#        $('.current__select-wrap').on('click', function () {#}
+{#            $(this).parent().toggleClass('show');#}
+{#        })#}
+{#    </script>#}
+{#     <script>#}
+{#        $('.select__option').on('click', function () {#}
+{#            var countryValue = $(this).parent().siblings('' +#}
+{#                '.current__select-wrap')#}
+{#                .children('.country__input');#}
+{##}
+{#            $(this).closest('.select__wrap').removeClass('show');#}
+{#            countryValue.attr('value', $(this).text().trim());#}
+{#            if (countryValue.val() !== "") {#}
+{#                $(this).parent().siblings('select').removeAttr('required');#}
+{#            } else {#}
+{#                $(this).parent().siblings('select').attr('required', 'required');#}
+{#            }#}
+{#        })#}
+{#    </script>#}

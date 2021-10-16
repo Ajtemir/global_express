@@ -204,7 +204,7 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         exclude = ['is_active', 'is_staff', 'is_superuser',
-                   'last_login', 'date_joined']
+                   'last_login', 'date_joined', 'is_bought_self']
 
 
 class ResetForm(forms.Form):

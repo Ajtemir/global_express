@@ -1,0 +1,187 @@
+
+    <div class="delete__wrap">
+        <div class="delete__product">
+            <form action="" id="delete-form">
+                {% csrf_token %}
+                <input type="hidden" name="delete" id="delete-input">
+                <h3 class="delete__title">
+                    Вы действительно хотите удалить товар?
+                </h3>
+                <div class="buttons">
+                    <div class="cancel button">
+                        Отмена
+                    </div>
+                        <button type="submit" id="delete-button"
+                            class="delete button">
+                        Удалить
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="table__wrap">
+            <table>
+                <tbody>
+                <tr>
+                    <th>
+                        Дата
+                    </th>
+                    <th>
+                        Номер
+                    </th>
+                    <th>
+                        Получатель
+                    </th>
+                    <th>
+                        Наименование
+                    </th>
+                    <th>
+                        Кол во
+                    </th>
+                    <th>
+                        Общая цена
+                    </th>
+                    <th>
+                        Вес
+                    </th>
+                    <th>
+                        Склад
+                    </th>
+                    <th>
+                        Трек
+                    </th>
+                    <th>
+                        Статус
+                    </th>
+                </tr>
+                {% for object in object_list %}
+                    <tr>
+                        <td>
+                            {{ object.timestamp }}
+                        </td>
+                        <td>
+                            {{ object.pk }}
+                        </td>
+                        <td>
+                            {{ object.recipient }}
+                        </td>
+                        <td>
+                            {{ object.name }}
+                        </td>
+                        <td>
+                            {{ object.amount }} шт
+                        </td>
+                        <td>
+                            {{ object.price }} $
+                        </td>
+                        <td>
+                            {{ object.weight }} кг
+                        </td>
+                        <td>
+                            {{ object.store }}
+                        </td>
+                        <td>
+                            {{ object.track }}
+                        </td>
+                        <td class="td-icon">
+                            <div class="item">
+                                {% include 'parcels/parcel-status-icon.html' %}
+                            </div>
+                            <div class="item edit-trigger"
+                                 data-micromodal-trigger="edit__product" id="{{ object.pk }}">
+                                <svg width="14" height="14"
+                                     viewBox="0 0 14 14" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.57833 12.0044C2.41469 12.0042 2.2587 11.9352 2.14841 11.8143C2.03609 11.6944 1.98028 11.5322 1.995 11.3686L2.13791 9.79711L8.74008 3.19728L10.8033 5.25994L4.20291 11.8592L2.63141 12.0021C2.61333 12.0039 2.59525 12.0044 2.57833 12.0044ZM11.2152 4.84753L9.1525 2.78486L10.3897 1.54761C10.4992 1.43807 10.6476 1.37653 10.8025 1.37653C10.9573 1.37653 11.1057 1.43807 11.2152 1.54761L12.4524 2.78486C12.5619 2.89427 12.6235 3.04275 12.6235 3.19757C12.6235 3.35239 12.5619 3.50086 12.4524 3.61028L11.2157 4.84694L11.2152 4.84753Z"
+                                          fill="#2E3A59"/>
+                                </svg>
+                            </div>
+                            <div class="item delete" id="{{ object.pk }}">
+                                <svg width="14" height="14"
+                                     viewBox="0 0 14 14" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.91667 12.8334H4.08333C3.439 12.8334 2.91667 12.311 2.91667 11.6667V4.08335H1.75V2.91669H4.08333V2.33335C4.08333 1.68902 4.60567 1.16669 5.25 1.16669H8.75C9.39433 1.16669 9.91667 1.68902 9.91667 2.33335V2.91669H12.25V4.08335H11.0833V11.6667C11.0833 12.311 10.561 12.8334 9.91667 12.8334ZM4.08333 4.08335V11.6667H9.91667V4.08335H4.08333ZM5.25 2.33335V2.91669H8.75V2.33335H5.25ZM8.75 10.5H7.58333V5.25002H8.75V10.5ZM6.41667 10.5H5.25V5.25002H6.41667V10.5Z"
+                                          fill="#2E3A59"/>
+                                </svg>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pagination">
+        <div class="arrows">
+            <a {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}"{% endif %}>
+                <div class="arrow">
+                    <svg width="8" height="14" viewBox="0 0 8 14"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 1L1 6.7L7 13" stroke="#003CAA"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </a>
+            <a {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}"{% endif %}>
+                <div class="arrow">
+                    <svg width="8" height="14" viewBox="0 0 8 14"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 6.7L1 13" stroke="#003CAA"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </a>
+
+        </div>
+        <div class="pages">
+            <div>
+                Стр.
+            </div>
+            <input type="text" value="{{ page_obj.number }}" id="paginate">
+            <div>
+                из <span class="page-num">{{ page_obj.paginator.num_pages }}</span>
+            </div>
+        </div>
+    </div>
+
+{#<script>#}
+{#    document.getElementById("add-form").reset();#}
+{#    MicroModal.close('add__product');#}
+{#</script>#}
+
+{# script base #}
+{#    <script>#}
+{#        $('.micromodal-slide .modal__textarea').on('input', function () {#}
+{#            var currentNum = $(this).siblings('.symbol__counter').children('.current__length');#}
+{#            var limit = Number($(this).siblings('.symbol__counter')#}
+{#                .children('.total__length').text());#}
+{#            var valueLength = $(this).val().length;#}
+{##}
+{#            this.style.height = "";#}
+{#            this.style.height = this.scrollHeight + 2 + "px";#}
+{##}
+{#            currentNum.text(valueLength);#}
+{#            if (valueLength === limit) {#}
+{#                currentNum.addClass('warning');#}
+{#            } else {#}
+{#                currentNum.removeClass('warning');#}
+{#            }#}
+{#        })#}
+{#    </script>#}
+{##}
+{##}
+{#    <script>#}
+{#        $('.item.delete').on('click', function () {#}
+{#            $('.delete__product').addClass('show');#}
+{#        })#}
+{##}
+{#        $('.button.cancel').on('click', function () {#}
+{#            $('.delete__product').removeClass('show');#}
+{#        })#}
+{#    </script>#}
+

@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from parcels.models import Parcel
 from sections.models import (Question, Shop, Country, News, Category,
                              AboutUsInformation, ImagesAboutUs, HowItWorks,
                              ImagesHowItWorks, FaqSubBlock, FaqBlock)
