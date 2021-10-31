@@ -23,34 +23,44 @@
                         <img src="{% static 'img/png/logo.png' %}" alt="">
                     </div>
                 </div>
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">
+                                {{ message|safe }}
+                                <a href="#" class="close">✖</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <h2 class="sign__title">
                     Войти
                 </h2>
                 <form action="." method="POST">
                     {% csrf_token %}
                     <div class="fields {% if form.email.errors %}error{% endif %}">
-{#                        Если E-mail неправильный, добавить класс "error" на fields#}
-{#                        и раскомментировать email__error#}
+                        {#                        Если E-mail неправильный, добавить класс "error" на fields#}
+                        {#                        и раскомментировать email__error#}
                         <label for="sign_email" class="sign__label">
                             Ваш электронный адрес
                         </label>
                         {{ form.email }}
 
                         {% if form.email.errors %}
-                         <p class="email__error">
-                             {% for error in form.email.errors %}
-                             {{error}}
-                             {% endfor %}
-                           </p>
+                            <p class="email__error">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </p>
                         {% endif %}
 
-{#                        <p class="email__error">#}
-{#                            Email не найден попробуйте снова#}
-{#                        </p>#}
+                        {#                        <p class="email__error">#}
+                        {#                            Email не найден попробуйте снова#}
+                        {#                        </p>#}
                     </div>
                     <div class="fields {% if form.password.errors %}error{% endif %}">
-{#                        Если пароль неправильный, добавить класс "error" на fields#}
-{#                        и раскомментировать forget__password #}
+                        {#                        Если пароль неправильный, добавить класс "error" на fields#}
+                        {#                        и раскомментировать forget__password #}
                         <label for="id_password" class="sign__label">
                             Ваш пароль
                         </label>
@@ -59,13 +69,13 @@
                             <div class="sign__eye"></div>
                         </div>
                         {% if form.password.errors %}
-                        <div class="forget__password" data-micromodal-trigger="forget-password">
-                            Забыли пароль?
-                        </div>
+                            <div class="forget__password" data-micromodal-trigger="forget-password">
+                                Забыли пароль?
+                            </div>
                         {% endif %}
-{#                        <div class="forget__password" data-micromodal-trigger="forget-password">#}
-{#                            Забыли пароль?#}
-{#                        </div>#}
+                        {#                        <div class="forget__password" data-micromodal-trigger="forget-password">#}
+                        {#                            Забыли пароль?#}
+                        {#                        </div>#}
                     </div>
                     <button type="submit" class="sign__btn">
                         Войти
@@ -81,7 +91,7 @@
         </div>
     </div>
 
-                    {#    модалка забыли пароль  #}
+    {#    модалка забыли пароль  #}
     <div class="modal micromodal-slide" id="forget-password" aria-hidden="true">
         <div class="modal__overlay sign__modal-overlay" tabindex="-1" data-micromodal-close>
             <div class="modal__container" role="dialog" aria-modal="true">
@@ -102,26 +112,27 @@
                             </label>
                             <input required type="text" id="sign-email" class="sign__input must"
                                    placeholder="Primer@gmail.com">
-<!--                            <p class="email__error">-->
-<!--                                Email не совпадает-->
-<!--                            </p>-->
+                            <!--                            <p class="email__error">-->
+                            <!--                                Email не совпадает-->
+                            <!--                            </p>-->
                         </div>
                         <button type="submit" class="personal__btn modal__btn" id="send">
                             Отправить
                         </button>
                     </form>
                 </div>
-                        <div class="area__modal verify-modal" id="email-verify-modal" style="display: none; flex-direction: column; align-items: center; text-align: center;">
-                            <div class="modal__close" data-micromodal-close></div>
-                            <img src="{% static 'img/png/verify-email.png' %}" alt="Verify Email">
-                            <h2 class="modal__title">
-                                На ваш E-mail почту оправлена ссылка
-                            </h2>
-                            <div class="modal__subtitle">
-                                Если не обнаружили письма,
-                                то проверьте папку "Спам"
-                            </div>
-                        </div>
+                <div class="area__modal verify-modal" id="email-verify-modal"
+                     style="display: none; flex-direction: column; align-items: center; text-align: center;">
+                    <div class="modal__close" data-micromodal-close></div>
+                    <img src="{% static 'img/png/verify-email.png' %}" alt="Verify Email">
+                    <h2 class="modal__title">
+                        На ваш E-mail почту оправлена ссылка
+                    </h2>
+                    <div class="modal__subtitle">
+                        Если не обнаружили письма,
+                        то проверьте папку "Спам"
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -134,44 +145,50 @@
     <script>
         var submitted = false;
         var form = document.getElementById("reset");
-        form.onsubmit = function(){
-           if(!submitted){
-               submitted = false;
-           }
-           return false;
+        form.onsubmit = function () {
+            if (!submitted) {
+                submitted = false;
+            }
+            return false;
         }
     </script>
     <script>
-        $('#send').on('click', function (){
-        let email = $('.must')[0].value;
+        $('#send').on('click', function () {
+            let email = $('.must')[0].value;
 
-        let data = {
-            email: email,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        }
-
-
-        $.ajax({
-            method:"POST",
-            dataType: "json",
-            data: data,
-            url: "{% url "users:forget-password" %}",
-            success: function(data){
-                let result = data['data']
-                if (result){
-                    console.log(result);
-                    $('#email-verify-modal').css('display', 'flex');
-                    $('#form-modal').css('display', 'none');
-                } else {
-                    console.log(false);
-                    $("#field").addClass("error");
-                    if ($('#must2').length == 0){
-                    $(".must").after('<p class="email__error" id="must2">Email не совпадает </p>');
-                    };
-
-                };
+            let data = {
+                email: email,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             }
+
+
+            $.ajax({
+                method: "POST",
+                dataType: "json",
+                data: data,
+                url: "{% url "users:forget-password" %}",
+                success: function (data) {
+                    let result = data['data']
+                    if (result) {
+                        console.log(result);
+                        $('#email-verify-modal').css('display', 'flex');
+                        $('#form-modal').css('display', 'none');
+                    } else {
+                        console.log(false);
+                        $("#field").addClass("error");
+                        if ($('#must2').length == 0) {
+                            $(".must").after('<p class="email__error" id="must2">Email не совпадает </p>');
+                        }
+                        ;
+
+                    }
+                    ;
+                }
+            })
         })
-    })
+
+        $(document).on('click', '.close', function () {
+            $('.success').css('display', 'none');
+        })
     </script>
 {% endblock %}

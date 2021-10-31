@@ -10,7 +10,6 @@ User = get_user_model()
 
 class Parcel(models.Model):
     timestamp = models.DateField(verbose_name=_('дата создания товара'), auto_now_add=True)
-
     user = models.ForeignKey(User, verbose_name=_('аккаунт заказчика'),
                              related_name='parcels', on_delete=models.CASCADE)
     recipient = models.CharField(verbose_name=_('получатель Ф.И.О'), max_length=100)
@@ -23,15 +22,15 @@ class Parcel(models.Model):
     store = models.CharField(verbose_name=_('страна склада'), max_length=50)
     track = models.CharField(verbose_name=_('трек номер'), max_length=18, unique=True)
 
-    IN_PROCESS = 1
-    SORTING = 2
-    PROCESSED = 3
-    RAISED = 4
-    FLYING = 5
-    SEARCHING = 6
-    STORE = 7
-    STORE_KG = 8
-    UNREGISTERED = 9
+    IN_PROCESS = 'in_process'
+    SORTING = 'sorting'
+    PROCESSED = 'processed'
+    RAISED = 'raised'
+    FLYING = 'flying'
+    SEARCHING = 'searching'
+    STORE = 'store'
+    STORE_KG = 'store_kg'
+    UNREGISTERED = 'unregistered'
     STATUS_CHOICES = (
         (IN_PROCESS, _('В процессе')),
         (SORTING, _('Сортировка')),
@@ -43,8 +42,8 @@ class Parcel(models.Model):
         (STORE_KG, _('На складе в KG')),
         (UNREGISTERED, _('Незарегистрированный заказ')),
     )
-    status = models.PositiveIntegerField(verbose_name=_('статус'), choices=STATUS_CHOICES,
-                                         default=UNREGISTERED)
+    status = models.CharField(verbose_name=_('статус'), choices=STATUS_CHOICES,
+                              default=UNREGISTERED, max_length=50)
 
     is_deleted = models.BooleanField(verbose_name=_('удален'), default=False)
     type = models.CharField(verbose_name=_('вид товара'), max_length=50)

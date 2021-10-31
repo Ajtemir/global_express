@@ -1,19 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import Http404
+from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
-from django.views.generic.edit import FormView
+from django.views.generic import FormView
 
-from parcels.forms import AddForm, EditForm
+from parcels.forms import EditForm, AddForm
 from parcels.models import Parcel
 
 
-class ParcelsView(LoginRequiredMixin, FormView):
+class ParcelListView(LoginRequiredMixin, FormView):
     template_name = 'parcels/parcels.html'
     login_url = '/sign/'
-    model = Parcel
-    paginate_by = 3
-    form_class = AddForm
+    paginate_by = 2
+    form_class = EditForm
 
     def get_queryset(self):
         return self.request.user.parcels.filter(is_deleted=False).order_by('id')
@@ -36,6 +35,27 @@ class ParcelsView(LoginRequiredMixin, FormView):
         return context
 
     def post(self, request, *args, **kwargs):
+        # delete
+        if 'delete' in request.POST:
+            parcel_id = request.POST['delete']
+            parcel = get_object_or_404(Parcel, pk=parcel_id)
+            parcel.is_deleted = True
+            parcel.save()
+            return self.render_to_response(self.get_context_data())
+
+        # create
+        if 'track' in request.POST:
+            track = request.POST.get('track')
+            if Parcel.objects.filter(track=track).exists():
+                return JsonResponse({'data': False}, status=450)
+            else:
+                form = AddForm(request.POST)
+                parcel = form.save(commit=False)
+                parcel.user = self.request.user
+                parcel.save()
+                return JsonResponse({'data': True}, status=200)
+
+        # get parcels data to edit
         if 'edit' in request.POST:
             parcel_id = request.POST.get('edit')
             parcel = get_object_or_404(Parcel, pk=parcel_id)
@@ -43,26 +63,14 @@ class ParcelsView(LoginRequiredMixin, FormView):
             self.template_name = 'parcels/edit-form.html'
 
             return self.render_to_response(
-                self.get_context_data(edit_form=edit_form, parcel_track=parcel.track),
+                self.get_context_data(edit_form=edit_form,
+                                      parcel_track=parcel.track),
                 status=201)
-
-        if 'delete' in request.POST:
-            parcel_id = request.POST['delete']
-            parcel = get_object_or_404(Parcel, pk=parcel_id)
-            parcel.is_deleted = True
-            parcel.save()
-            self.template_name = 'parcels/all-parcels.html'
-            return self.render_to_response(self.get_context_data(), status=201)
-
-        if 'clear_add' in request.POST:
-            form = AddForm()
-            self.template_name = 'parcels/add-form.html'
-            return self.render_to_response(self.get_context_data(form=form), status=201)
 
         if 'price' not in request.POST:
             form = EditForm(request.POST)
-
             if form.is_valid():
+
                 data = form.cleaned_data
                 parcel_id = data['id']
                 parcel = get_object_or_404(Parcel, pk=parcel_id)
@@ -72,27 +80,16 @@ class ParcelsView(LoginRequiredMixin, FormView):
                 parcel.site = data['site']
                 parcel.comment = data['comment']
                 parcel.save()
-                self.template_name = 'parcels/all-parcels.html'
-                return self.render_to_response(self.get_context_data(), status=201)
+
+                return HttpResponse(status=201)
             else:
                 self.template_name = 'parcels/edit-form.html'
                 return self.render_to_response(self.get_context_data(edit_form=form))
 
-        form = AddForm(request.POST)
 
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
 
-    def form_invalid(self, form):
-        self.template_name = 'parcels/add-form.html'
-        return self.render_to_response(self.get_context_data(form=form))
 
-    def form_valid(self, form):
-        parcel = form.save(commit=False)
-        parcel.user = self.request.user
-        parcel.save()
-        self.template_name = 'parcels/all-parcels.html'
-        form = self.form_class
-        return self.render_to_response(self.get_context_data(form=form), status=201)
+
+
+
+

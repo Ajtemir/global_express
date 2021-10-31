@@ -349,38 +349,12 @@
             <div class="employee__slider">
                 <div class="swiper-container employee__swiper-container">
                     <div class="swiper-wrapper employee__swiper-wrapper">
+                        {% for partner in partners %}
                         <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
+                            <img src="{{ partner.image.url }}" alt=""
                                  class="employee__img">
                         </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
-                        <div class="swiper-slide employee__swiper-slide">
-                            <img src="{% static 'img/png/amazon.png' %}" alt=""
-                                 class="employee__img">
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="swiper-button-next employee__swiper-next employee__swiper-arrow"
@@ -410,53 +384,26 @@
                 <h2 class="news__title">
                     Новости
                 </h2>
-                <a href="#" class="more__news">
+                <a href="/news" class="more__news">
                     Еще больше новостей
                 </a>
             </div>
             <div class="news__grid">
+                {% for new_object in news %}
                 <div class="news__item">
                     <div class="news__img">
-                        <img src="{% static 'img/png/news.png' %}" alt="">
+                        <img src="{{ new_object.image.url }}" alt="">
                     </div>
                     <div class="news__content">
                         <div class="news__date">
-                            22.05.2020 18:36
+                            {{ new_object.timestamp }}
                         </div>
                         <h4 class="news__item-ttl">
-                            Evegreen или “Ты не пройдешь!”. Как это повлияло на
-                            мир
+                            {{ new_object.title }}
                         </h4>
                     </div>
                 </div>
-                <div class="news__item">
-                    <div class="news__img">
-                        <img src="{% static 'img/png/news.png' %}" alt="">
-                    </div>
-                    <div class="news__content">
-                        <div class="news__date">
-                            22.05.2020 18:36
-                        </div>
-                        <h4 class="news__item-ttl">
-                            Evegreen или “Ты не пройдешь!”. Как это повлияло на
-                            мир
-                        </h4>
-                    </div>
-                </div>
-                <div class="news__item">
-                    <div class="news__img">
-                        <img src="{% static 'img/png/news.png' %}" alt="">
-                    </div>
-                    <div class="news__content">
-                        <div class="news__date">
-                            22.05.2020 18:36
-                        </div>
-                        <h4 class="news__item-ttl">
-                            Evegreen или “Ты не пройдешь!”. Как это повлияло на
-                            мир
-                        </h4>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -474,15 +421,16 @@
             <div class="delivery__slider">
                 <div class="swiper-container delivery__swiper-container">
                     <div class="swiper-wrapper delivery__swiper-wrapper">
+                        {% for store in stores %}
                         <div class="swiper-slide delivery__swiper-slide">
                             <div class="delivery__slide-inner">
                                 <div class="delivery__img">
-                                    <img src="{% static 'img/png/delivery.png' %}"
+                                    <img src="{{ store.image.url }}"
                                          alt="">
                                 </div>
                                 <div class="delivery__content">
                                     <h5 class="delivery__slide-ttl">
-                                        Пекин
+                                        {{ store.country }}
                                     </h5>
                                     <div class="delivery__info">
                                         <div class="info__item">
@@ -490,7 +438,7 @@
                                             Адрес:
                                         </span>
                                             <span class="info__value">
-                                            645 West 1st Avenue
+                                            {{ store.address }}
                                         </span>
                                         </div>
                                         <div class="info__item">
@@ -498,7 +446,7 @@
                                             Получатель:
                                         </span>
                                             <span class="info__value">
-                                            Family Pelican Express UKG0005
+                                            {{ store.recipient }}
                                         </span>
                                         </div>
                                         <div class="info__item">
@@ -506,7 +454,7 @@
                                             Город:
                                         </span>
                                             <span class="info__value">
-                                            Roselle
+                                            {{ store.city }}
                                         </span>
                                         </div>
                                         <div class="info__item">
@@ -514,7 +462,7 @@
                                             Штат:
                                         </span>
                                             <span class="info__value">
-                                            NJ  (New Jersey)
+                                            {{ store.state }}
                                         </span>
                                         </div>
                                         <div class="info__item">
@@ -522,7 +470,7 @@
                                             Почтовый код:
                                         </span>
                                             <span class="info__value">
-                                            07203
+                                            {{ store.postcode }}
                                         </span>
                                         </div>
                                         <div class="info__item">
@@ -530,202 +478,14 @@
                                             Телефон
                                         </span>
                                             <span class="info__value">
-                                            +996 774 102 811
+                                            {{ store.phone }}
                                         </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-slide delivery__swiper-slide">
-                            <div class="delivery__slide-inner">
-                                <div class="delivery__img">
-                                    <img src="{% static 'img/png/delivery.png' %}"
-                                         alt="">
-                                </div>
-                                <div class="delivery__content">
-                                    <h5 class="delivery__slide-ttl">
-                                        Пекин
-                                    </h5>
-                                    <div class="delivery__info">
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Адрес:
-                                        </span>
-                                            <span class="info__value">
-                                            645 West 1st Avenue
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Получатель:
-                                        </span>
-                                            <span class="info__value">
-                                            Family Pelican Express UKG0005
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Город:
-                                        </span>
-                                            <span class="info__value">
-                                            Roselle
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Штат:
-                                        </span>
-                                            <span class="info__value">
-                                            NJ  (New Jersey)
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Почтовый код:
-                                        </span>
-                                            <span class="info__value">
-                                            07203
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Телефон
-                                        </span>
-                                            <span class="info__value">
-                                            +996 774 102 811
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide delivery__swiper-slide">
-                            <div class="delivery__slide-inner">
-                                <div class="delivery__img">
-                                    <img src="{% static 'img/png/delivery.png' %}"
-                                         alt="">
-                                </div>
-                                <div class="delivery__content">
-                                    <h5 class="delivery__slide-ttl">
-                                        Пекин
-                                    </h5>
-                                    <div class="delivery__info">
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Адрес:
-                                        </span>
-                                            <span class="info__value">
-                                            645 West 1st Avenue
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Получатель:
-                                        </span>
-                                            <span class="info__value">
-                                            Family Pelican Express UKG0005
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Город:
-                                        </span>
-                                            <span class="info__value">
-                                            Roselle
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Штат:
-                                        </span>
-                                            <span class="info__value">
-                                            NJ  (New Jersey)
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Почтовый код:
-                                        </span>
-                                            <span class="info__value">
-                                            07203
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Телефон
-                                        </span>
-                                            <span class="info__value">
-                                            +996 774 102 811
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide delivery__swiper-slide">
-                            <div class="delivery__slide-inner">
-                                <div class="delivery__img">
-                                    <img src="{% static 'img/png/delivery.png' %}"
-                                         alt="">
-                                </div>
-                                <div class="delivery__content">
-                                    <h5 class="delivery__slide-ttl">
-                                        Пекин
-                                    </h5>
-                                    <div class="delivery__info">
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Адрес:
-                                        </span>
-                                            <span class="info__value">
-                                            645 West 1st Avenue
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Получатель:
-                                        </span>
-                                            <span class="info__value">
-                                            Family Pelican Express UKG0005
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Город:
-                                        </span>
-                                            <span class="info__value">
-                                            Roselle
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Штат:
-                                        </span>
-                                            <span class="info__value">
-                                            NJ  (New Jersey)
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Почтовый код:
-                                        </span>
-                                            <span class="info__value">
-                                            07203
-                                        </span>
-                                        </div>
-                                        <div class="info__item">
-                                        <span class="info__name">
-                                            Телефон
-                                        </span>
-                                            <span class="info__value">
-                                            +996 774 102 811
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div data-aos="fade-right" data-aos-duration="700"

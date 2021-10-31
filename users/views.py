@@ -1,3 +1,4 @@
+import jwt
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.hashers import check_password
@@ -5,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -14,15 +16,36 @@ from django.views.generic import CreateView, FormView, TemplateView
 
 from users.forms import SignForm, RegistrationForm, ResetForm
 
-
 User = get_user_model()
 
 
-class RegistrationView(CreateView):
+class RegistrationView(SuccessMessageMixin, CreateView):
     template_name = 'users/registration.html'
     form_class = RegistrationForm
     model = User
     success_url = reverse_lazy('users:sign')
+    success_message = """Мы отправили вам сообщение на вашу почту,
+                        подтвердите вашу почту"""
+
+    def get_success_url(self):
+        email = self.request.POST.get('email')
+        encoded = jwt.encode({"email": email}, "secret", algorithm="HS256")
+        url = f'{self.request.get_host()}{reverse("users:confirm", args=[encoded])}'
+        send_mail("Изменение пароля",
+                  f'Чтобы подтвердить почту, перейдите по ссылке => {url}',
+                  settings.EMAIL_SENDER, [email], fail_silently=False)
+        return reverse('users:sign')
+
+
+class ConfirmView(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        token = self.kwargs.get('token')
+        data = jwt.decode(token, "secret", algorithms=["HS256"])
+        user = get_object_or_404(User, email=data['email'])
+        user.is_active = True
+        user.save()
+        return redirect('users:sign')
 
 
 class SignView(LoginView):

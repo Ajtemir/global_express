@@ -29,3 +29,15 @@ def how_it_work_image(instance, file_name: str):
     ext = file_name.split('.')[-1]
     file_name = f'{uuid.uuid4()}.{ext}'
     return f'how_it_work/{file_name}'
+
+
+def partner_image(instance, file_name: str):
+    ext = file_name.split('.')[-1]
+    file_name = f'{uuid.uuid4()}.{ext}'
+    return f'partner/{file_name}'
+
+
+def index_store_image(instance, file_name: str):
+    ext = file_name.split('.')[-1]
+    file_name = f'{uuid.uuid4()}.ext'
+    return f'index_store_image/{file_name}'

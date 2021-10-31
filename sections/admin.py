@@ -3,7 +3,7 @@ from django.contrib import admin
 from parcels.models import Parcel
 from sections.models import (Question, Shop, Country, News, Category,
                              AboutUsInformation, ImagesAboutUs, HowItWorks,
-                             ImagesHowItWorks, FaqSubBlock, FaqBlock)
+                             ImagesHowItWorks, FaqSubBlock, FaqBlock, Partner, IndexStore)
 
 admin.site.register(Question)
 admin.site.register(Shop)
@@ -28,5 +28,7 @@ admin.site.register(HowItWorks)
 admin.site.register(ImagesHowItWorks)
 admin.site.register(FaqBlock)
 admin.site.register(FaqSubBlock)
+admin.site.register(Partner)
+admin.site.register(IndexStore)
 
 

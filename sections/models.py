@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from pytils.translit import slugify
 
-from sections.media_path import shop_icon, shop_image, news_image, about_us_image, how_it_work_image
+from sections.media_path import shop_icon, shop_image, news_image, about_us_image, how_it_work_image, partner_image, \
+    index_store_image
 
 
 class Question(models.Model):
@@ -176,8 +177,10 @@ class FaqBlock(models.Model):
 class FaqSubBlock(models.Model):
     title = models.CharField(verbose_name=_('название'), max_length=50)
     description = models.TextField(verbose_name=_('описание'))
-    parent_block = models.ForeignKey(FaqBlock, verbose_name=_('родительский блок'),
-                                     on_delete=models.CASCADE, related_name='sub_blocks')
+    parent_block = models.ForeignKey(FaqBlock,
+                                     verbose_name=_('родительский блок'),
+                                     on_delete=models.CASCADE,
+                                     related_name='sub_blocks')
 
     class Meta:
         db_table = 'faq_sub_block'
@@ -186,4 +189,44 @@ class FaqSubBlock(models.Model):
 
     def __str__(self):
         return self.parent_block.title
+
+
+class Partner(models.Model):
+    image = models.ImageField(verbose_name=_('Логотип партнёра'),
+                              upload_to=partner_image)
+
+    class Meta:
+        db_table = 'partner'
+        verbose_name = _('Партнёр')
+        verbose_name_plural = _('Партнёры')
+
+    def __str__(self):
+        return f'Номер {self.pk}'
+
+
+class IndexStore(models.Model):
+    country = models.CharField(verbose_name=_('Страна склада'),
+                               max_length=50)
+    city = models.CharField(verbose_name=_('город'),
+                            max_length=50)
+    address = models.CharField(verbose_name=_('Адрес склада'),
+                               max_length=50)
+    recipient = models.CharField(verbose_name=_('получатель'),
+                                 max_length=100)
+    state = models.CharField(verbose_name=_('штат'), max_length=50,
+                             null=True, blank=True)
+    postcode = models.CharField(verbose_name=_('почтовый код'),
+                                max_length=50)
+    phone = models.CharField(verbose_name=_('телефон'), max_length=50)
+    image = models.ImageField(verbose_name=_('фотография'),
+                              upload_to=index_store_image)
+
+    class Meta:
+        db_table = 'index_store'
+        verbose_name = _('склад главной страницы')
+        verbose_name_plural = _('склады главных страниц')
+
+    def __str__(self):
+        return f'{self.city} {self.pk}'
+
 

@@ -3,11 +3,18 @@ from django.http import JsonResponse, Http404
 from django.views.generic import TemplateView, ListView, DetailView
 
 from sections.filters import ShopFilter, NewsFilter
-from sections.models import Question, Shop, News, AboutUsInformation, HowItWorks, FaqBlock
+from sections.models import Question, Shop, News, AboutUsInformation, HowItWorks, FaqBlock, Partner, IndexStore
 
 
 class BaseView(TemplateView):
     template_name = 'sections/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['partners'] = Partner.objects.all()
+        context['news'] = News.objects.all()[:3]
+        context['stores'] = IndexStore.objects.all()
+        return context
 
 
 class AboutUsView(TemplateView):

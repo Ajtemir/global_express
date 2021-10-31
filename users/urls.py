@@ -6,6 +6,7 @@ urlpatterns = [
     path('sign/', views.SignView.as_view(), name='sign'),
     path('registration/', views.RegistrationView.as_view(), name='registration'),
     path('reset/<int:pk>/<str:token>/', views.ForgetView.as_view(), name='reset'),
+    path('confirm/<str:token>/', views.ConfirmView.as_view(), name='confirm'),
     path('logout/', views.logout_view, name='logout'),
     path('personal-area/', views.PersonalAreaView.as_view(), name='personal-area'),
 

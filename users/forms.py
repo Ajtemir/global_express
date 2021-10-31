@@ -27,6 +27,10 @@ class SignForm(forms.Form):
             qs = User.objects.filter(email=email)
             if not qs.exists():
                 raise forms.ValidationError(_('Email не найден попробуйте снова'))
+            else:
+                user = qs.first()
+                if not user.is_active:
+                    raise forms.ValidationError(_('Почта не активна'))
         return email
 
     def clean_password(self):
@@ -199,6 +203,7 @@ class RegistrationForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         user = super().save(commit=False)
         user.set_password(user.password)
+        user.is_active = False
         return super().save(*args, **kwargs)
 
     class Meta:
